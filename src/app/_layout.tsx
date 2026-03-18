@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { FONTS } from '../constants/fonts';
-import { getDatabase } from '../db/database';
 import { MomentsProvider } from '../context/MomentsContext';
 
 SplashScreen.preventAutoHideAsync();
@@ -19,21 +18,13 @@ export default function RootLayout() {
     [FONTS.bodySemiBold]: require('../../assets/fonts/Nunito-SemiBold.ttf'),
   });
 
-  const [dbReady, setDbReady] = useState(false);
-
   useEffect(() => {
-    getDatabase()
-      .then(() => setDbReady(true))
-      .catch((err) => console.error('DB init failed:', err));
-  }, []);
-
-  useEffect(() => {
-    if (fontsLoaded && dbReady) {
+    if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, dbReady]);
+  }, [fontsLoaded]);
 
-  if (!fontsLoaded || !dbReady) return null;
+  if (!fontsLoaded) return null;
 
   return (
     <>
