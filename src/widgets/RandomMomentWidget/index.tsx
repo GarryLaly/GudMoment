@@ -27,7 +27,7 @@ export function RandomMomentWidget({ moment }: Props) {
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 3,
-        borderColor: moment.color,
+        borderColor: moment.color as `#${string}`,
       }}
     >
       <TextWidget text={moment.emoji} style={{ fontSize: 40 }} />

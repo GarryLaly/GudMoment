@@ -1,4 +1,4 @@
-import { SharedGroupPreferences } from 'react-native-shared-group-preferences';
+import SharedGroupPreferences from 'react-native-shared-group-preferences';
 import { Platform } from 'react-native';
 import { getAllMoments } from '../db/moments';
 import { formatElapsedTime } from './timeCalculator';
@@ -32,7 +32,7 @@ export async function updateWidgetData(): Promise<void> {
     await SharedGroupPreferences.setItem(
       WIDGET_DATA_KEY,
       JSON.stringify(widgetData),
-      Platform.OS === 'ios' ? APP_GROUP : undefined
+      Platform.OS === 'ios' ? APP_GROUP : ''
     );
   } catch {
     // Widget data update is best-effort; don't crash the app
@@ -44,7 +44,7 @@ export async function getWidgetData(): Promise<WidgetMomentData[]> {
   try {
     const data = await SharedGroupPreferences.getItem(
       WIDGET_DATA_KEY,
-      Platform.OS === 'ios' ? APP_GROUP : undefined
+      Platform.OS === 'ios' ? APP_GROUP : ''
     );
     if (!data) return [];
     return JSON.parse(data as string);

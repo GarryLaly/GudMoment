@@ -16,7 +16,6 @@ export function MultiMomentWidget({ moments }: Props) {
         borderRadius: 0,
         padding: 12,
         flexDirection: 'column',
-        gap: 8,
       }}
     >
       <TextWidget
@@ -29,8 +28,8 @@ export function MultiMomentWidget({ moments }: Props) {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            gap: 8,
             padding: 4,
+            marginBottom: 8,
             borderWidth: 2,
             borderColor: '#1A1A1A',
           }}
