@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Edit an existing moment's title
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Create a moment
 - tapOn: "+"

@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: View moment detail screen with elapsed time and actions
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Create a moment first
 - tapOn: "+"

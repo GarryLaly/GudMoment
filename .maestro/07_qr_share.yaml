@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Generate QR code for sharing a moment
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Create a moment
 - tapOn: "+"

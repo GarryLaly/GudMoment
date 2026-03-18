@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Moment with very long title (edge case - max 100 chars)
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Open create
 - tapOn: "+"

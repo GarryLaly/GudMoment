@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Tab navigation between Moments and Settings
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Should start on Moments tab
 - assertVisible: "GudMoment"

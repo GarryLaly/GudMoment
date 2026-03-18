@@ -1,0 +1,9 @@
+# Shared setup: Launch app and dismiss Expo Dev Client onboarding
+- launchApp:
+    clearState: true
+- tapOn:
+    text: "Continue"
+    optional: true
+- extendedWaitUntil:
+    visible: "GudMoment"
+    timeout: 30000

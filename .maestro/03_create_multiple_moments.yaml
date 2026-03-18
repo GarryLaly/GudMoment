@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Create multiple moments and verify they appear in list
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Create first moment
 - tapOn: "+"

@@ -1,9 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Create a new moment with all fields
-- launchApp:
-    clearState: true
-- assertVisible: "GudMoment"
+- runFlow: setup.yaml
 
 # Tap the FAB (+) button to create
 - tapOn: "+"

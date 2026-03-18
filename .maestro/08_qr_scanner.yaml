@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: QR Scanner screen opens and shows camera permission UI
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Tap scan button on home screen
 - tapOn: "📷"

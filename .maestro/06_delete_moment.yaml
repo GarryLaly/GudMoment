@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Delete a moment with confirmation dialog
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Create a moment
 - tapOn: "+"

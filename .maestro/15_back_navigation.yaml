@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Back navigation works correctly from all screens
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Create a moment for navigation testing
 - tapOn: "+"

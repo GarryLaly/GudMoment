@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Time picker toggle on create form
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Open create screen
 - tapOn: "+"

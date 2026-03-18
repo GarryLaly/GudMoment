@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Widget configuration in settings
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Create moments first so widget config has options
 - tapOn: "+"

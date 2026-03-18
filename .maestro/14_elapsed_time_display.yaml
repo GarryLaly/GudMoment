@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Elapsed time displays on both list and detail views
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Create a moment
 - tapOn: "+"

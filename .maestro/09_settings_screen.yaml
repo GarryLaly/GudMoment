@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Settings screen shows all sections
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Navigate to settings tab
 - tapOn: "Settings"

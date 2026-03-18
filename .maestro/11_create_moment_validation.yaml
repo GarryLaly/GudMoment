@@ -1,8 +1,7 @@
 appId: com.anonymous.gudmoment
 ---
 # Test: Form validation — empty title shows alert
-- launchApp:
-    clearState: true
+- runFlow: setup.yaml
 
 # Open create screen
 - tapOn: "+"
