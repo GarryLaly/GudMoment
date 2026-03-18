@@ -6,11 +6,11 @@ appId: com.anonymous.gudmoment
 # Should start on Moments tab
 - assertVisible: "GudMoment"
 
-# Switch to Settings tab (tap gear emoji)
-- tapOn: "⚙️"
+# Switch to Settings tab
+- tapOn: "Settings tab"
 - assertVisible: "Data"
 - assertVisible: "About"
 
-# Switch back to Moments tab (tap heart emoji)
-- tapOn: "💝"
+# Switch back to Moments tab
+- tapOn: "Moments tab"
 - assertVisible: "GudMoment"

@@ -14,8 +14,8 @@ export default function TabLayout() {
         tabBarStyle: { borderTopWidth: 3, borderTopColor: COLORS.border },
       }}
     >
-      <Tabs.Screen name="index" options={{ title: 'Moments', tabBarIcon: () => <Text style={{ fontSize: 24 }}>💝</Text> }} />
-      <Tabs.Screen name="settings" options={{ title: 'Settings', tabBarIcon: () => <Text style={{ fontSize: 24 }}>⚙️</Text> }} />
+      <Tabs.Screen name="index" options={{ title: 'Moments', tabBarAccessibilityLabel: 'Moments tab', tabBarIcon: () => <Text style={{ fontSize: 24 }}>💝</Text> }} />
+      <Tabs.Screen name="settings" options={{ title: 'Settings', tabBarAccessibilityLabel: 'Settings tab', tabBarIcon: () => <Text style={{ fontSize: 24 }}>⚙️</Text> }} />
     </Tabs>
   );
 }

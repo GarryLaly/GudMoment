@@ -13,8 +13,8 @@ appId: com.anonymous.gudmoment
     direction: DOWN
 - tapOn: "Save Moment"
 
-# Go to Settings (tap gear emoji)
-- tapOn: "⚙️"
+# Go to Settings
+- tapOn: "Settings tab"
 
 # Scroll to Widget Configuration
 - scrollUntilVisible:

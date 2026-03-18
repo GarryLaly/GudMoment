@@ -3,8 +3,8 @@ appId: com.anonymous.gudmoment
 # Test: Settings screen shows all sections
 - runFlow: setup.yaml
 
-# Navigate to settings tab (tap the gear emoji in tab bar)
-- tapOn: "⚙️"
+# Navigate to settings tab
+- tapOn: "Settings tab"
 
 # Verify all sections are visible
 - assertVisible: "Settings"
