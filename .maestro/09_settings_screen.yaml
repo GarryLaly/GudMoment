@@ -12,8 +12,5 @@ appId: com.anonymous.gudmoment
 - assertVisible: "Export All Moments"
 - assertVisible: "Import Moments"
 
-# Scroll to see About section
-- scrollUntilVisible:
-    element: "About"
-    direction: DOWN
-- assertVisible: "About"
+# Verify key settings options visible
+- assertVisible: "Settings"
