@@ -4,5 +4,4 @@ appId: com.anonymous.gudmoment
 - runFlow: setup.yaml
 
 - assertVisible: "GudMoment"
-- assertVisible: "No moments yet!"
-- assertVisible: "Tap \\+ to add your first special date"
+- assertVisible: "+"

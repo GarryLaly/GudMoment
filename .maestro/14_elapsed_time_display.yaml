@@ -5,7 +5,8 @@ appId: com.anonymous.gudmoment
 
 # Create a moment
 - tapOn: "+"
-- inputText: "Time Display Test"
+- tapOn: "What's the moment?"
+- inputText: "E2E Time Test"
 - hideKeyboard
 - scrollUntilVisible:
     element: "Save Moment"
@@ -13,13 +14,16 @@ appId: com.anonymous.gudmoment
 - tapOn: "Save Moment"
 
 # On the home screen, the moment should be visible
-- assertVisible: "Time Display Test"
+- scrollUntilVisible:
+    element: "E2E Time Test"
+    direction: DOWN
+- assertVisible: "E2E Time Test"
 
 # Open detail to verify detail screen loads
-- tapOn: "Time Display Test"
+- tapOn: "E2E Time Test"
 
 # The detail screen should show the moment title and action buttons
-- assertVisible: "Time Display Test"
+- assertVisible: "E2E Time Test"
 - assertVisible: "Share via QR"
 - assertVisible: "Edit"
 - assertVisible: "Delete"

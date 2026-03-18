@@ -7,7 +7,8 @@ appId: com.anonymous.gudmoment
 - tapOn: "+"
 
 # Enter title
-- inputText: "Emoji Test Moment"
+- tapOn: "What's the moment?"
+- inputText: "E2E Emoji Test"
 - hideKeyboard
 
 # Scroll to see emoji picker
@@ -30,4 +31,7 @@ appId: com.anonymous.gudmoment
 - tapOn: "Save Moment"
 
 # Verify moment created
-- assertVisible: "Emoji Test Moment"
+- scrollUntilVisible:
+    element: "E2E Emoji Test"
+    direction: DOWN
+- assertVisible: "E2E Emoji Test"

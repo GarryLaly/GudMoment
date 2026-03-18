@@ -7,10 +7,15 @@ appId: com.anonymous.gudmoment
 - tapOn: "+"
 
 # Type a very long title (TextInput has maxLength=100)
+- tapOn: "What's the moment?"
 - inputText: "This Is A Really Long Moment Title That Tests The Maximum Character Limit Of One Hundred Characters!!"
+- hideKeyboard
 
 # Save
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 
-# Should see the moment in the list (truncated with numberOfLines=1)
+# Should see the home screen (moment may be truncated in list)
 - assertVisible: "GudMoment"

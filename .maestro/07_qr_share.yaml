@@ -5,7 +5,8 @@ appId: com.anonymous.gudmoment
 
 # Create a moment
 - tapOn: "+"
-- inputText: "Our Trip to Bali"
+- tapOn: "What's the moment?"
+- inputText: "E2E QR Test"
 - hideKeyboard
 - scrollUntilVisible:
     element: "Save Moment"
@@ -13,16 +14,19 @@ appId: com.anonymous.gudmoment
 - tapOn: "Save Moment"
 
 # Open detail
-- tapOn: "Our Trip to Bali"
+- scrollUntilVisible:
+    element: "E2E QR Test"
+    direction: DOWN
+- tapOn: "E2E QR Test"
 
 # Tap Share via QR
 - tapOn: "Share via QR"
 
 # QR screen should show moment info
-- assertVisible: "Our Trip to Bali"
+- assertVisible: "E2E QR Test"
 - assertVisible: "Ask your partner to scan this in GudMoment"
 - assertVisible: "Done"
 
 # Go back
 - tapOn: "Done"
-- assertVisible: "Our Trip to Bali"
+- assertVisible: "E2E QR Test"

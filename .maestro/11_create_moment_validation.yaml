@@ -7,6 +7,9 @@ appId: com.anonymous.gudmoment
 - tapOn: "+"
 
 # Try to save without title
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 
 # Should show validation alert

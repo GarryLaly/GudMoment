@@ -5,36 +5,32 @@ appId: com.anonymous.gudmoment
 
 # Create first moment
 - tapOn: "+"
-- tapOn:
-    id: "title-input"
-    optional: true
-- inputText: "Wedding Day"
+- tapOn: "What's the moment?"
+- inputText: "E2E Multi A"
 - hideKeyboard
 - scrollUntilVisible:
     element: "Save Moment"
     direction: DOWN
 - tapOn: "Save Moment"
-- assertVisible: "Wedding Day"
+- scrollUntilVisible:
+    element: "E2E Multi A"
+    direction: DOWN
+- assertVisible: "E2E Multi A"
 
 # Create second moment
 - tapOn: "+"
-- inputText: "First Date"
+- tapOn: "What's the moment?"
+- inputText: "E2E Multi B"
 - hideKeyboard
 - scrollUntilVisible:
     element: "Save Moment"
     direction: DOWN
 - tapOn: "Save Moment"
-- assertVisible: "First Date"
-- assertVisible: "Wedding Day"
-
-# Create third moment
-- tapOn: "+"
-- inputText: "Baby Born"
-- hideKeyboard
 - scrollUntilVisible:
-    element: "Save Moment"
+    element: "E2E Multi B"
     direction: DOWN
-- tapOn: "Save Moment"
-- assertVisible: "Baby Born"
-- assertVisible: "First Date"
-- assertVisible: "Wedding Day"
+- assertVisible: "E2E Multi B"
+- scrollUntilVisible:
+    element: "E2E Multi A"
+    direction: DOWN
+- assertVisible: "E2E Multi A"

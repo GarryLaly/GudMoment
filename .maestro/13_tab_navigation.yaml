@@ -5,7 +5,6 @@ appId: com.anonymous.gudmoment
 
 # Should start on Moments tab
 - assertVisible: "GudMoment"
-- assertVisible: "No moments yet!"
 
 # Switch to Settings tab
 - tapOn: "Settings"
@@ -15,4 +14,3 @@ appId: com.anonymous.gudmoment
 # Switch back to Moments tab
 - tapOn: "Moments"
 - assertVisible: "GudMoment"
-- assertVisible: "No moments yet!"

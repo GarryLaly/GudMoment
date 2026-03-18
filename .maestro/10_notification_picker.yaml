@@ -5,7 +5,8 @@ appId: com.anonymous.gudmoment
 
 # Create a moment
 - tapOn: "+"
-- inputText: "Birthday Reminder"
+- tapOn: "What's the moment?"
+- inputText: "E2E Notify Test"
 - hideKeyboard
 - scrollUntilVisible:
     element: "Save Moment"
@@ -13,7 +14,10 @@ appId: com.anonymous.gudmoment
 - tapOn: "Save Moment"
 
 # Open detail
-- tapOn: "Birthday Reminder"
+- scrollUntilVisible:
+    element: "E2E Notify Test"
+    direction: DOWN
+- tapOn: "E2E Notify Test"
 
 # Should see notification picker
 - scrollUntilVisible:

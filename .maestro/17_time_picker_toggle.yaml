@@ -5,7 +5,8 @@ appId: com.anonymous.gudmoment
 
 # Open create screen
 - tapOn: "+"
-- inputText: "Time Toggle Test"
+- tapOn: "What's the moment?"
+- inputText: "E2E Time Toggle"
 - hideKeyboard
 
 # Should see "Include time?" with toggle switch
@@ -19,4 +20,7 @@ appId: com.anonymous.gudmoment
     element: "Save Moment"
     direction: DOWN
 - tapOn: "Save Moment"
-- assertVisible: "Time Toggle Test"
+- scrollUntilVisible:
+    element: "E2E Time Toggle"
+    direction: DOWN
+- assertVisible: "E2E Time Toggle"

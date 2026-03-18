@@ -5,7 +5,8 @@ appId: com.anonymous.gudmoment
 
 # Create a moment for navigation testing
 - tapOn: "+"
-- inputText: "Nav Test"
+- tapOn: "What's the moment?"
+- inputText: "E2E Nav Test"
 - hideKeyboard
 - scrollUntilVisible:
     element: "Save Moment"
@@ -19,20 +20,26 @@ appId: com.anonymous.gudmoment
 - assertVisible: "GudMoment"
 
 # Test: Detail screen back button
-- tapOn: "Nav Test"
-- assertVisible: "Nav Test"
+- scrollUntilVisible:
+    element: "E2E Nav Test"
+    direction: DOWN
+- tapOn: "E2E Nav Test"
+- assertVisible: "E2E Nav Test"
 - tapOn: "← Back"
 - assertVisible: "GudMoment"
 
 # Test: Edit screen back button
-- tapOn: "Nav Test"
+- scrollUntilVisible:
+    element: "E2E Nav Test"
+    direction: DOWN
+- tapOn: "E2E Nav Test"
 - tapOn: "Edit"
 - assertVisible: "Edit Moment"
 - tapOn: "← Back"
-- assertVisible: "Nav Test"
+- assertVisible: "E2E Nav Test"
 
 # Test: QR screen back button
 - tapOn: "Share via QR"
 - assertVisible: "Done"
 - tapOn: "Done"
-- assertVisible: "Nav Test"
+- assertVisible: "E2E Nav Test"

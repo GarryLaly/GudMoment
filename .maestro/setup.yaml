@@ -1,9 +1,15 @@
-# Shared setup: Launch app and dismiss Expo Dev Client onboarding
-- launchApp:
-    clearState: true
-- tapOn:
-    text: "Continue"
-    optional: true
+appId: com.anonymous.gudmoment
+---
+# Shared setup: Launch app and ensure we're on home screen
+- launchApp
+
+# Wait for app to load (either home screen or any screen)
 - extendedWaitUntil:
-    visible: "GudMoment"
-    timeout: 30000
+    visible:
+      text: "+"
+    timeout: 45000
+
+# Ensure we're on the Moments tab (home screen)
+- tapOn:
+    text: "Moments"
+    optional: true

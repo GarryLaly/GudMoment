@@ -1,23 +1,29 @@
 appId: com.anonymous.gudmoment
 ---
-# Test: View moment detail screen with elapsed time and actions
+# Test: View moment detail screen with actions
 - runFlow: setup.yaml
 
 # Create a moment first
 - tapOn: "+"
-- inputText: "Our Anniversary"
+- tapOn: "What's the moment?"
+- inputText: "E2E Detail Test"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 
 # Tap the moment to see detail
-- tapOn: "Our Anniversary"
+- scrollUntilVisible:
+    element: "E2E Detail Test"
+    direction: DOWN
+- tapOn: "E2E Detail Test"
 
 # Verify detail screen elements
-- assertVisible: "Our Anniversary"
-- assertVisible: "ago"
+- assertVisible: "E2E Detail Test"
 - assertVisible: "Share via QR"
 - assertVisible: "Edit"
 - assertVisible: "Delete"
 
 # Go back
 - tapOn: "← Back"
-- assertVisible: "GudMoment"

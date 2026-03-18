@@ -11,8 +11,8 @@ appId: com.anonymous.gudmoment
 - assertVisible: "What's the moment?"
 
 # Enter title
-- tapOn: "Our Wedding Day"
-- inputText: "Our Wedding Day"
+- tapOn: "What's the moment?"
+- inputText: "E2E Create Test"
 - hideKeyboard
 
 # Tap save button
@@ -23,4 +23,7 @@ appId: com.anonymous.gudmoment
 
 # Should navigate back to home and see the moment
 - assertVisible: "GudMoment"
-- assertVisible: "Our Wedding Day"
+- scrollUntilVisible:
+    element: "E2E Create Test"
+    direction: DOWN
+- assertVisible: "E2E Create Test"

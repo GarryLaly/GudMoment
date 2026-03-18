@@ -5,7 +5,8 @@ appId: com.anonymous.gudmoment
 
 # Create a moment
 - tapOn: "+"
-- inputText: "Old Title"
+- tapOn: "What's the moment?"
+- inputText: "E2E Edit Before"
 - hideKeyboard
 - scrollUntilVisible:
     element: "Save Moment"
@@ -13,7 +14,10 @@ appId: com.anonymous.gudmoment
 - tapOn: "Save Moment"
 
 # Open detail
-- tapOn: "Old Title"
+- scrollUntilVisible:
+    element: "E2E Edit Before"
+    direction: DOWN
+- tapOn: "E2E Edit Before"
 
 # Tap edit
 - tapOn: "Edit"
@@ -22,9 +26,9 @@ appId: com.anonymous.gudmoment
 - assertVisible: "Edit Moment"
 
 # Clear and change title
-- tapOn: "Old Title"
+- tapOn: "E2E Edit Before"
 - clearText
-- inputText: "New Title"
+- inputText: "E2E Edit After"
 - hideKeyboard
 
 # Save
@@ -34,4 +38,4 @@ appId: com.anonymous.gudmoment
 - tapOn: "Save Changes"
 
 # Back on detail, should see new title
-- assertVisible: "New Title"
+- assertVisible: "E2E Edit After"
