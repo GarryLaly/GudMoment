@@ -6,6 +6,10 @@ appId: com.anonymous.gudmoment
 # Create a moment
 - tapOn: "+"
 - inputText: "Birthday Reminder"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 
 # Open detail

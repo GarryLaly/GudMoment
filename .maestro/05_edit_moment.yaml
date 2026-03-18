@@ -6,6 +6,10 @@ appId: com.anonymous.gudmoment
 # Create a moment
 - tapOn: "+"
 - inputText: "Old Title"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 
 # Open detail
@@ -19,10 +23,14 @@ appId: com.anonymous.gudmoment
 
 # Clear and change title
 - tapOn: "Old Title"
-- eraseText: 9
+- clearText
 - inputText: "New Title"
+- hideKeyboard
 
 # Save
+- scrollUntilVisible:
+    element: "Save Changes"
+    direction: DOWN
 - tapOn: "Save Changes"
 
 # Back on detail, should see new title

@@ -6,10 +6,18 @@ appId: com.anonymous.gudmoment
 # Create moments first so widget config has options
 - tapOn: "+"
 - inputText: "Widget Moment 1"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 
 - tapOn: "+"
 - inputText: "Widget Moment 2"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 
 # Go to Settings

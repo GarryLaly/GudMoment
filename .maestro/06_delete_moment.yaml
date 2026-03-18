@@ -6,6 +6,10 @@ appId: com.anonymous.gudmoment
 # Create a moment
 - tapOn: "+"
 - inputText: "Moment to Delete"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 - assertVisible: "Moment to Delete"
 

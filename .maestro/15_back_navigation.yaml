@@ -6,6 +6,10 @@ appId: com.anonymous.gudmoment
 # Create a moment for navigation testing
 - tapOn: "+"
 - inputText: "Nav Test"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 
 # Test: Create screen back button

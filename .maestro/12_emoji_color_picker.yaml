@@ -8,6 +8,7 @@ appId: com.anonymous.gudmoment
 
 # Enter title
 - inputText: "Emoji Test Moment"
+- hideKeyboard
 
 # Scroll to see emoji picker
 - scrollUntilVisible:

@@ -9,12 +9,20 @@ appId: com.anonymous.gudmoment
     id: "title-input"
     optional: true
 - inputText: "Wedding Day"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 - assertVisible: "Wedding Day"
 
 # Create second moment
 - tapOn: "+"
 - inputText: "First Date"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 - assertVisible: "First Date"
 - assertVisible: "Wedding Day"
@@ -22,6 +30,10 @@ appId: com.anonymous.gudmoment
 # Create third moment
 - tapOn: "+"
 - inputText: "Baby Born"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 - assertVisible: "Baby Born"
 - assertVisible: "First Date"

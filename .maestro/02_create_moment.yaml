@@ -13,8 +13,12 @@ appId: com.anonymous.gudmoment
 # Enter title
 - tapOn: "Our Wedding Day"
 - inputText: "Our Wedding Day"
+- hideKeyboard
 
 # Tap save button
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 
 # Should navigate back to home and see the moment

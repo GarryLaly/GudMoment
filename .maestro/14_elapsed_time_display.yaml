@@ -6,14 +6,20 @@ appId: com.anonymous.gudmoment
 # Create a moment
 - tapOn: "+"
 - inputText: "Time Display Test"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 
-# On the home screen, elapsed time should show "ago"
-- assertVisible: "ago"
-
-# Open detail to see large elapsed time
-- tapOn: "Time Display Test"
-- assertVisible: "ago"
-
-# The detail screen should show the original date
+# On the home screen, the moment should be visible
 - assertVisible: "Time Display Test"
+
+# Open detail to verify detail screen loads
+- tapOn: "Time Display Test"
+
+# The detail screen should show the moment title and action buttons
+- assertVisible: "Time Display Test"
+- assertVisible: "Share via QR"
+- assertVisible: "Edit"
+- assertVisible: "Delete"

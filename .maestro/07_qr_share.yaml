@@ -6,6 +6,10 @@ appId: com.anonymous.gudmoment
 # Create a moment
 - tapOn: "+"
 - inputText: "Our Trip to Bali"
+- hideKeyboard
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
 - tapOn: "Save Moment"
 
 # Open detail

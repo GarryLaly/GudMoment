@@ -6,6 +6,7 @@ appId: com.anonymous.gudmoment
 # Open create screen
 - tapOn: "+"
 - inputText: "Time Toggle Test"
+- hideKeyboard
 
 # Should see "Include time?" with toggle switch
 - scrollUntilVisible:
