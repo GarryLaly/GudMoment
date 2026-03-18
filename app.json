@@ -34,6 +34,12 @@
       ["expo-camera", { "cameraPermission": "Allow GudMoment to access camera for scanning QR codes" }],
       ["expo-notifications", { "icon": "./assets/notification-icon.png", "color": "#FF6B6B" }]
     ],
-    "experiments": { "typedRoutes": true }
+    "experiments": { "typedRoutes": true },
+    "updates": {
+      "url": "https://u.expo.dev/YOUR_PROJECT_ID"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
   }
 }
