@@ -3,6 +3,7 @@ import { View, Text, Pressable, Alert, ScrollView, StyleSheet } from 'react-nati
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ElapsedTimeDisplay } from '../../components/ElapsedTimeDisplay';
+import { NotificationPicker } from '../../components/NotificationPicker';
 import { useMoments } from '../../hooks/useMoments';
 import { getMomentById, type Moment } from '../../db/moments';
 import { COLORS, BORDERS, SPACING } from '../../constants/theme';
@@ -55,6 +56,7 @@ export default function MomentDetailScreen() {
             <Text style={styles.actionText}>Delete</Text>
           </Pressable>
         </View>
+        <NotificationPicker momentId={moment.id} momentTitle={moment.title} momentDate={moment.date} />
       </ScrollView>
     </SafeAreaView>
   );
