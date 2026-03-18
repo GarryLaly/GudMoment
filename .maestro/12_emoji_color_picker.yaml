@@ -1,0 +1,33 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Emoji and color pickers work on create screen
+- launchApp:
+    clearState: true
+
+# Open create screen
+- tapOn: "+"
+
+# Enter title
+- inputText: "Emoji Test Moment"
+
+# Scroll to see emoji picker
+- scrollUntilVisible:
+    element: "Pick an emoji"
+    direction: DOWN
+
+# Tap a different emoji (ring)
+- tapOn: "💍"
+
+# Scroll to color picker
+- scrollUntilVisible:
+    element: "Pick a color"
+    direction: DOWN
+
+# Save
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
+- tapOn: "Save Moment"
+
+# Verify moment created
+- assertVisible: "Emoji Test Moment"

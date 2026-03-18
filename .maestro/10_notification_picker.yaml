@@ -1,0 +1,26 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Notification picker on detail screen
+- launchApp:
+    clearState: true
+
+# Create a moment
+- tapOn: "+"
+- inputText: "Birthday Reminder"
+- tapOn: "Save Moment"
+
+# Open detail
+- tapOn: "Birthday Reminder"
+
+# Should see notification picker
+- scrollUntilVisible:
+    element: "Remind me"
+    direction: DOWN
+
+- assertVisible: "Every Year"
+- assertVisible: "Every 2 Years"
+- assertVisible: "Every 6 Months"
+- assertVisible: "Monthly"
+
+# Select yearly notification
+- tapOn: "Every Year"

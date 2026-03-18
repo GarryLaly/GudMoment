@@ -1,0 +1,30 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Edit an existing moment's title
+- launchApp:
+    clearState: true
+
+# Create a moment
+- tapOn: "+"
+- inputText: "Old Title"
+- tapOn: "Save Moment"
+
+# Open detail
+- tapOn: "Old Title"
+
+# Tap edit
+- tapOn: "Edit"
+
+# Should see edit screen
+- assertVisible: "Edit Moment"
+
+# Clear and change title
+- tapOn: "Old Title"
+- eraseText: 9
+- inputText: "New Title"
+
+# Save
+- tapOn: "Save Changes"
+
+# Back on detail, should see new title
+- assertVisible: "New Title"

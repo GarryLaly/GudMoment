@@ -1,0 +1,7 @@
+appId: com.anonymous.gudmoment
+---
+# Test: App launches successfully and shows home screen
+- launchApp
+- assertVisible: "GudMoment"
+- assertVisible: "No moments yet!"
+- assertVisible: "Tap + to add your first special date"

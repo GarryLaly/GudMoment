@@ -1,0 +1,25 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Generate QR code for sharing a moment
+- launchApp:
+    clearState: true
+
+# Create a moment
+- tapOn: "+"
+- inputText: "Our Trip to Bali"
+- tapOn: "Save Moment"
+
+# Open detail
+- tapOn: "Our Trip to Bali"
+
+# Tap Share via QR
+- tapOn: "Share via QR"
+
+# QR screen should show moment info
+- assertVisible: "Our Trip to Bali"
+- assertVisible: "Ask your partner to scan this in GudMoment"
+- assertVisible: "Done"
+
+# Go back
+- tapOn: "Done"
+- assertVisible: "Our Trip to Bali"

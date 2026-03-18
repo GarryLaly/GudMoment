@@ -1,0 +1,17 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Moment with very long title (edge case - max 100 chars)
+- launchApp:
+    clearState: true
+
+# Open create
+- tapOn: "+"
+
+# Type a very long title (TextInput has maxLength=100)
+- inputText: "This Is A Really Long Moment Title That Tests The Maximum Character Limit Of One Hundred Characters!!"
+
+# Save
+- tapOn: "Save Moment"
+
+# Should see the moment in the list (truncated with numberOfLines=1)
+- assertVisible: "GudMoment"

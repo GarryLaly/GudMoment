@@ -1,0 +1,24 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Create a new moment with all fields
+- launchApp:
+    clearState: true
+- assertVisible: "GudMoment"
+
+# Tap the FAB (+) button to create
+- tapOn: "+"
+
+# Should see the create moment screen
+- assertVisible: "New Moment"
+- assertVisible: "What's the moment?"
+
+# Enter title
+- tapOn: "Our Wedding Day"
+- inputText: "Our Wedding Day"
+
+# Tap save button
+- tapOn: "Save Moment"
+
+# Should navigate back to home and see the moment
+- assertVisible: "GudMoment"
+- assertVisible: "Our Wedding Day"

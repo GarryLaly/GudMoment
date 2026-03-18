@@ -1,0 +1,16 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Settings screen shows all sections
+- launchApp:
+    clearState: true
+
+# Navigate to settings tab
+- tapOn: "Settings"
+
+# Verify all sections are visible
+- assertVisible: "Settings"
+- assertVisible: "Data"
+- assertVisible: "Export All Moments"
+- assertVisible: "Import Moments"
+- assertVisible: "About"
+- assertVisible: "GudMoment"

@@ -1,0 +1,35 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Back navigation works correctly from all screens
+- launchApp:
+    clearState: true
+
+# Create a moment for navigation testing
+- tapOn: "+"
+- inputText: "Nav Test"
+- tapOn: "Save Moment"
+
+# Test: Create screen back button
+- tapOn: "+"
+- assertVisible: "New Moment"
+- tapOn: "← Back"
+- assertVisible: "GudMoment"
+
+# Test: Detail screen back button
+- tapOn: "Nav Test"
+- assertVisible: "Nav Test"
+- tapOn: "← Back"
+- assertVisible: "GudMoment"
+
+# Test: Edit screen back button
+- tapOn: "Nav Test"
+- tapOn: "Edit"
+- assertVisible: "Edit Moment"
+- tapOn: "← Back"
+- assertVisible: "Nav Test"
+
+# Test: QR screen back button
+- tapOn: "Share via QR"
+- assertVisible: "Done"
+- tapOn: "Done"
+- assertVisible: "Nav Test"

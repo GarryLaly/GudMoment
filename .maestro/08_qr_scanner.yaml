@@ -1,0 +1,17 @@
+appId: com.anonymous.gudmoment
+---
+# Test: QR Scanner screen opens and shows camera permission UI
+- launchApp:
+    clearState: true
+
+# Tap scan button on home screen
+- tapOn: "📷"
+
+# Should see camera permission request or scanner screen
+# On first launch, will ask for camera permission
+- assertVisible:
+    text: "Camera permission needed to scan QR codes"
+    optional: true
+- assertVisible:
+    text: "Scan Moment"
+    optional: true

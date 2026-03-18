@@ -1,0 +1,24 @@
+appId: com.anonymous.gudmoment
+---
+# Test: View moment detail screen with elapsed time and actions
+- launchApp:
+    clearState: true
+
+# Create a moment first
+- tapOn: "+"
+- inputText: "Our Anniversary"
+- tapOn: "Save Moment"
+
+# Tap the moment to see detail
+- tapOn: "Our Anniversary"
+
+# Verify detail screen elements
+- assertVisible: "Our Anniversary"
+- assertVisible: "ago"
+- assertVisible: "Share via QR"
+- assertVisible: "Edit"
+- assertVisible: "Delete"
+
+# Go back
+- tapOn: "← Back"
+- assertVisible: "GudMoment"

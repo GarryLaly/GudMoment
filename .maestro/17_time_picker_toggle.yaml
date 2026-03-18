@@ -1,0 +1,22 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Time picker toggle on create form
+- launchApp:
+    clearState: true
+
+# Open create screen
+- tapOn: "+"
+- inputText: "Time Toggle Test"
+
+# Should see "Include time?" with toggle switch
+- scrollUntilVisible:
+    element: "Include time?"
+    direction: DOWN
+- assertVisible: "Include time?"
+
+# Save without time — should work
+- scrollUntilVisible:
+    element: "Save Moment"
+    direction: DOWN
+- tapOn: "Save Moment"
+- assertVisible: "Time Toggle Test"

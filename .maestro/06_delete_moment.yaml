@@ -1,0 +1,35 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Delete a moment with confirmation dialog
+- launchApp:
+    clearState: true
+
+# Create a moment
+- tapOn: "+"
+- inputText: "Moment to Delete"
+- tapOn: "Save Moment"
+- assertVisible: "Moment to Delete"
+
+# Open detail
+- tapOn: "Moment to Delete"
+
+# Tap delete
+- tapOn: "Delete"
+
+# Confirmation dialog should appear
+- assertVisible: "Delete Moment to Delete?"
+- assertVisible: "This cannot be undone."
+
+# Cancel first — moment should still be there
+- tapOn: "Cancel"
+- assertVisible: "Moment to Delete"
+
+# Now actually delete
+- tapOn: "Delete"
+- assertVisible: "Delete Moment to Delete?"
+- tapOn:
+    text: "Delete"
+    index: 1
+
+# Should be back on home with empty state
+- assertVisible: "No moments yet!"

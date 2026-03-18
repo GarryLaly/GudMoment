@@ -1,0 +1,19 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Form validation — empty title shows alert
+- launchApp:
+    clearState: true
+
+# Open create screen
+- tapOn: "+"
+
+# Try to save without title
+- tapOn: "Save Moment"
+
+# Should show validation alert
+- assertVisible: "Title required"
+- assertVisible: "Please give your moment a name"
+- tapOn: "OK"
+
+# Should still be on create screen
+- assertVisible: "New Moment"

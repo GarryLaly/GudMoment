@@ -1,0 +1,20 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Elapsed time displays on both list and detail views
+- launchApp:
+    clearState: true
+
+# Create a moment
+- tapOn: "+"
+- inputText: "Time Display Test"
+- tapOn: "Save Moment"
+
+# On the home screen, elapsed time should show "ago"
+- assertVisible: "ago"
+
+# Open detail to see large elapsed time
+- tapOn: "Time Display Test"
+- assertVisible: "ago"
+
+# The detail screen should show the original date
+- assertVisible: "Time Display Test"

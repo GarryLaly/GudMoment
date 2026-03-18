@@ -1,0 +1,29 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Create multiple moments and verify they appear in list
+- launchApp:
+    clearState: true
+
+# Create first moment
+- tapOn: "+"
+- tapOn:
+    id: "title-input"
+    optional: true
+- inputText: "Wedding Day"
+- tapOn: "Save Moment"
+- assertVisible: "Wedding Day"
+
+# Create second moment
+- tapOn: "+"
+- inputText: "First Date"
+- tapOn: "Save Moment"
+- assertVisible: "First Date"
+- assertVisible: "Wedding Day"
+
+# Create third moment
+- tapOn: "+"
+- inputText: "Baby Born"
+- tapOn: "Save Moment"
+- assertVisible: "Baby Born"
+- assertVisible: "First Date"
+- assertVisible: "Wedding Day"

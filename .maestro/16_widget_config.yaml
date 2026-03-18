@@ -1,0 +1,31 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Widget configuration in settings
+- launchApp:
+    clearState: true
+
+# Create moments first so widget config has options
+- tapOn: "+"
+- inputText: "Widget Moment 1"
+- tapOn: "Save Moment"
+
+- tapOn: "+"
+- inputText: "Widget Moment 2"
+- tapOn: "Save Moment"
+
+# Go to Settings
+- tapOn: "Settings"
+
+# Scroll to Widget Configuration
+- scrollUntilVisible:
+    element: "Widget Configuration"
+    direction: DOWN
+
+- assertVisible: "Multi-Moment List Widget"
+- assertVisible: "Random Rotation Widget"
+
+# Scroll to save button
+- scrollUntilVisible:
+    element: "Save Widget Config"
+    direction: DOWN
+- assertVisible: "Save Widget Config"

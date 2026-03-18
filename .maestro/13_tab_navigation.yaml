@@ -1,0 +1,19 @@
+appId: com.anonymous.gudmoment
+---
+# Test: Tab navigation between Moments and Settings
+- launchApp:
+    clearState: true
+
+# Should start on Moments tab
+- assertVisible: "GudMoment"
+- assertVisible: "No moments yet!"
+
+# Switch to Settings tab
+- tapOn: "Settings"
+- assertVisible: "Data"
+- assertVisible: "About"
+
+# Switch back to Moments tab
+- tapOn: "Moments"
+- assertVisible: "GudMoment"
+- assertVisible: "No moments yet!"
