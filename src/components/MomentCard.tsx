@@ -7,16 +7,19 @@ import type { Moment } from '../db/moments';
 interface Props {
   moment: Moment;
   onPress: (id: string) => void;
+  onLongPress?: () => void;
+  disabled?: boolean;
 }
 
-export function MomentCard({ moment, onPress }: Props) {
+export function MomentCard({ moment, onPress, onLongPress, disabled }: Props) {
   return (
-    <Pressable onPress={() => onPress(moment.id)} style={styles.container}>
+    <Pressable onPress={() => onPress(moment.id)} onLongPress={onLongPress} disabled={disabled}
+      style={styles.container} accessibilityLabel={moment.title} testID={`moment-card-${moment.id}`}>
       <View style={[styles.stripe, { backgroundColor: moment.color }]} />
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.emoji}>{moment.emoji}</Text>
-          <Text style={styles.title} numberOfLines={1}>{moment.title}</Text>
+          <Text style={styles.title} numberOfLines={1} accessibilityLabel={moment.title}>{moment.title}</Text>
         </View>
         <ElapsedTimeDisplay date={moment.date} time={moment.time} size="sm" />
       </View>

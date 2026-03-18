@@ -16,9 +16,7 @@ export default function HomeScreen() {
 
   const renderItem = ({ item, drag, isActive }: RenderItemParams<Moment>) => (
     <ScaleDecorator>
-      <Pressable onLongPress={drag} disabled={isActive}>
-        <MomentCard moment={item} onPress={(id) => router.push(`/moment/${id}`)} />
-      </Pressable>
+      <MomentCard moment={item} onPress={(id) => router.push(`/moment/${id}`)} onLongPress={drag} disabled={isActive} />
     </ScaleDecorator>
   );
 
