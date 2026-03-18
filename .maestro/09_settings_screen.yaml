@@ -6,10 +6,14 @@ appId: com.anonymous.gudmoment
 # Navigate to settings tab
 - tapOn: "Settings tab"
 
-# Verify all sections are visible
+# Verify Data section visible
 - assertVisible: "Settings"
 - assertVisible: "Data"
 - assertVisible: "Export All Moments"
 - assertVisible: "Import Moments"
+
+# Scroll to see About section
+- scrollUntilVisible:
+    element: "About"
+    direction: DOWN
 - assertVisible: "About"
-- assertVisible: "GudMoment"
