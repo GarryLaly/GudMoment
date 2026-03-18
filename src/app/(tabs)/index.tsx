@@ -1,15 +1,26 @@
-import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import DraggableFlatList, { ScaleDecorator, RenderItemParams } from 'react-native-draggable-flatlist';
 import { useMoments } from '../../hooks/useMoments';
 import { MomentCard } from '../../components/MomentCard';
 import { EmptyState } from '../../components/EmptyState';
 import { COLORS, BORDERS, SPACING } from '../../constants/theme';
 import { FONTS } from '../../constants/fonts';
+import type { Moment } from '../../db/moments';
 
 export default function HomeScreen() {
-  const { moments, loading } = useMoments();
+  const { moments, loading, reorderMoments } = useMoments();
   const router = useRouter();
+
+  const renderItem = ({ item, drag, isActive }: RenderItemParams<Moment>) => (
+    <ScaleDecorator>
+      <Pressable onLongPress={drag} disabled={isActive}>
+        <MomentCard moment={item} onPress={(id) => router.push(`/moment/${id}`)} />
+      </Pressable>
+    </ScaleDecorator>
+  );
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -23,11 +34,15 @@ export default function HomeScreen() {
       {moments.length === 0 && !loading ? (
         <EmptyState />
       ) : (
-        <FlatList data={moments} keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <MomentCard moment={item} onPress={(id) => router.push(`/moment/${id}`)} />
-          )}
-          contentContainerStyle={styles.list} />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <DraggableFlatList
+            data={moments}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            onDragEnd={({ data }) => reorderMoments(data)}
+            contentContainerStyle={styles.list}
+          />
+        </GestureHandlerRootView>
       )}
 
       <Pressable style={styles.fab} onPress={() => router.push('/moment/create')}>

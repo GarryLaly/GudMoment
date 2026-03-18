@@ -15,13 +15,15 @@ type MomentsAction =
   | { type: 'UPDATE_MOMENT'; payload: Moment }
   | { type: 'DELETE_MOMENT'; payload: string }
   | { type: 'SET_LOADING'; payload: boolean }
-  | { type: 'SET_ERROR'; payload: string | null };
+  | { type: 'SET_ERROR'; payload: string | null }
+  | { type: 'REORDER_MOMENTS'; payload: Moment[] };
 
 interface MomentsContextValue extends MomentsState {
   loadMoments: () => Promise<void>;
   addMoment: (input: CreateMomentInput) => Promise<Moment>;
   editMoment: (id: string, input: UpdateMomentInput) => Promise<Moment | null>;
   removeMoment: (id: string) => Promise<void>;
+  reorderMoments: (moments: Moment[]) => Promise<void>;
 }
 
 export const MomentsContext = createContext<MomentsContextValue | null>(null);
@@ -40,6 +42,8 @@ function momentsReducer(state: MomentsState, action: MomentsAction): MomentsStat
       return { ...state, loading: action.payload };
     case 'SET_ERROR':
       return { ...state, error: action.payload, loading: false };
+    case 'REORDER_MOMENTS':
+      return { ...state, moments: action.payload };
     default:
       return state;
   }
@@ -78,10 +82,17 @@ export function MomentsProvider({ children }: { children: React.ReactNode }) {
     updateWidgetData();
   }, []);
 
+  const reorderMoments = useCallback(async (reordered: Moment[]) => {
+    dispatch({ type: 'REORDER_MOMENTS', payload: reordered });
+    const ids = reordered.map(m => m.id);
+    await MomentsDB.updateMomentOrder(ids);
+    updateWidgetData();
+  }, []);
+
   useEffect(() => { loadMoments(); }, [loadMoments]);
 
   return (
-    <MomentsContext.Provider value={{ ...state, loadMoments, addMoment, editMoment, removeMoment }}>
+    <MomentsContext.Provider value={{ ...state, loadMoments, addMoment, editMoment, removeMoment, reorderMoments }}>
       {children}
     </MomentsContext.Provider>
   );

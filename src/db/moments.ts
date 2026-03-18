@@ -76,3 +76,11 @@ export async function deleteMoment(id: string): Promise<void> {
   const db = await getDatabase();
   await db.runAsync('DELETE FROM moments WHERE id = ?', [id]);
 }
+
+export async function updateMomentOrder(orderedIds: string[]): Promise<void> {
+  const db = await getDatabase();
+  for (let i = 0; i < orderedIds.length; i++) {
+    await db.runAsync('UPDATE moments SET sort_order = ?, updated_at = ? WHERE id = ?',
+      [i, new Date().toISOString(), orderedIds[i]]);
+  }
+}
