@@ -51,7 +51,8 @@ export function MomentForm({ initialValues, onSubmit, submitLabel }: Props) {
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.label}>What's the moment?</Text>
       <TextInput style={styles.input} value={title} onChangeText={setTitle}
-        placeholder="Our Wedding Day" placeholderTextColor={COLORS.textLight} maxLength={100} />
+        placeholder="Our Wedding Day" placeholderTextColor={COLORS.textLight} maxLength={100}
+        testID="title-input" accessibilityLabel="Moment title" autoFocus />
 
       <Text style={styles.label}>Date</Text>
       <Pressable style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
