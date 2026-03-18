@@ -1,6 +1,7 @@
 import React, { createContext, useReducer, useEffect, useCallback } from 'react';
 import * as MomentsDB from '../db/moments';
 import type { Moment, CreateMomentInput, UpdateMomentInput } from '../db/moments';
+import { updateWidgetData } from '../utils/widgetBridge';
 
 interface MomentsState {
   moments: Moment[];
@@ -60,18 +61,21 @@ export function MomentsProvider({ children }: { children: React.ReactNode }) {
   const addMoment = useCallback(async (input: CreateMomentInput) => {
     const moment = await MomentsDB.createMoment(input);
     dispatch({ type: 'ADD_MOMENT', payload: moment });
+    updateWidgetData();
     return moment;
   }, []);
 
   const editMoment = useCallback(async (id: string, input: UpdateMomentInput) => {
     const moment = await MomentsDB.updateMoment(id, input);
     if (moment) dispatch({ type: 'UPDATE_MOMENT', payload: moment });
+    updateWidgetData();
     return moment;
   }, []);
 
   const removeMoment = useCallback(async (id: string) => {
     await MomentsDB.deleteMoment(id);
     dispatch({ type: 'DELETE_MOMENT', payload: id });
+    updateWidgetData();
   }, []);
 
   useEffect(() => { loadMoments(); }, [loadMoments]);
