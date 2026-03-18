@@ -9,7 +9,7 @@ appId: com.anonymous.gudmoment
 # Switch to Settings tab
 - tapOn: "Settings tab"
 - assertVisible: "Data"
-- assertVisible: "About"
+- assertVisible: "Export All Moments"
 
 # Switch back to Moments tab
 - tapOn: "Moments tab"

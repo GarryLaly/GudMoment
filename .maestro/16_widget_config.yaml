@@ -22,7 +22,9 @@ appId: com.anonymous.gudmoment
     direction: DOWN
 
 - assertVisible: "Multi-Moment List Widget"
-- assertVisible: "Random Rotation Widget"
+- scrollUntilVisible:
+    element: "Random Rotation Widget"
+    direction: DOWN
 
 # Scroll to save button
 - scrollUntilVisible:

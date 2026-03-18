@@ -20,7 +20,7 @@ appId: com.anonymous.gudmoment
     element: "Save Moment"
     direction: DOWN
 - tapOn: "Save Moment"
-- scrollUntilVisible:
-    element: "E2E Time Toggle"
-    direction: DOWN
+- extendedWaitUntil:
+    visible: "GudMoment"
+    timeout: 10000
 - assertVisible: "E2E Time Toggle"
