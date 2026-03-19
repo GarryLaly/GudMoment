@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="iPhone 17 Pro - iOS 26.2 - E3D6959F-273A-4FF3-B93A-8C1B904D0C10" tests="1" failures="1" time="19.0">
+    <testcase id="01_app_launch" name="01_app_launch" classname="01_app_launch" time="19.0" status="ERROR">
+      <failure>Assertion is false: "No moments yet!" is visible</failure>
+    </testcase>
+  </testsuite>
+</testsuites>
