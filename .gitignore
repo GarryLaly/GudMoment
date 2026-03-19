@@ -46,3 +46,4 @@ eas.json
 *.aab
 
 .react-native-prebuilts
+build-*
