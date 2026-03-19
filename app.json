@@ -62,7 +62,8 @@
         }
       ],
       "expo-sharing",
-      "./plugins/fix-shared-group-preferences"
+      "./plugins/fix-shared-group-preferences",
+      "./plugins/fix-react-native-prebuilts"
     ],
     "experiments": {
       "typedRoutes": true
