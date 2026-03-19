@@ -61,7 +61,8 @@
           "color": "#FF6B6B"
         }
       ],
-      "expo-sharing"
+      "expo-sharing",
+      "./plugins/fix-shared-group-preferences"
     ],
     "experiments": {
       "typedRoutes": true

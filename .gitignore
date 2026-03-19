@@ -44,3 +44,7 @@ eas.json
 # generated native folders
 /ios
 /android
+
+*.ipa
+*.apk
+*.aab

@@ -53,5 +53,14 @@
       "react": "$react"
     }
   },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": [
+          "react-native-shared-group-preferences"
+        ]
+      }
+    }
+  },
   "private": true
 }
