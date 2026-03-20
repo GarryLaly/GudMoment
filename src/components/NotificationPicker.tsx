@@ -3,7 +3,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { getNotificationsForMoment, deleteNotificationsForMoment } from '../db/notifications';
 import { saveAndScheduleNotification, requestNotificationPermissions } from '../hooks/useNotifications';
 import { COLORS, BORDERS, SPACING } from '../constants/theme';
-import { FONTS } from '../constants/fonts';
+import { FONTS, TYPOGRAPHY } from '../constants/fonts';
 
 const RECURRING_OPTIONS = [
   { label: 'Every Year', value: 'yearly' },
@@ -48,12 +48,22 @@ export function NotificationPicker({ momentId, momentTitle, momentDate }: Props)
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Remind me</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Anniversary Alerts</Text>
+        <Text style={styles.headerSubtitle}>Get reminded when this moment comes around</Text>
+      </View>
+
+      <Text style={styles.label}>RECURRING FREQUENCY</Text>
+
       <View style={styles.options}>
         {RECURRING_OPTIONS.map((opt) => (
           <Pressable
             key={opt.value}
-            style={[styles.option, selected === opt.value && styles.optionSelected]}
+            style={({ pressed }) => [
+              styles.option,
+              selected === opt.value && styles.optionSelected,
+              pressed && styles.optionPressed,
+            ]}
             onPress={() => handleSelect(opt.value)}
           >
             <Text style={[styles.optionText, selected === opt.value && styles.optionTextSelected]}>
@@ -67,17 +77,72 @@ export function NotificationPicker({ momentId, momentTitle, momentDate }: Props)
 }
 
 const styles = StyleSheet.create({
-  container: { marginTop: SPACING.lg },
-  label: { fontFamily: FONTS.bodySemiBold, fontSize: 16, color: COLORS.text, marginBottom: SPACING.sm },
-  options: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm },
+  container: {
+    marginTop: SPACING.xl,
+    backgroundColor: COLORS.surfaceContainerLowest,
+    borderWidth: BORDERS.width,
+    borderColor: COLORS.border,
+    padding: SPACING.lg,
+    shadowColor: BORDERS.shadowColor,
+    shadowOffset: BORDERS.shadowOffset,
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 4,
+  },
+  header: {
+    marginBottom: SPACING.md,
+  },
+  headerTitle: {
+    fontFamily: FONTS.bodyBold,
+    fontSize: 18,
+    color: COLORS.onSurface,
+    marginBottom: SPACING.xs,
+  },
+  headerSubtitle: {
+    ...TYPOGRAPHY.body,
+    color: COLORS.textMuted,
+  },
+  label: {
+    ...TYPOGRAPHY.labelMono,
+    color: COLORS.textMuted,
+    marginBottom: SPACING.sm,
+  },
+  options: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: SPACING.sm,
+  },
   option: {
-    paddingVertical: SPACING.sm,
+    width: '48%' as unknown as number,
+    paddingVertical: SPACING.sm + 4,
     paddingHorizontal: SPACING.md,
     borderWidth: BORDERS.width,
     borderColor: COLORS.border,
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.surfaceContainerLowest,
+    alignItems: 'center',
+    shadowColor: BORDERS.shadowColor,
+    shadowOffset: BORDERS.shadowSm,
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 2,
   },
-  optionSelected: { backgroundColor: COLORS.primary },
-  optionText: { fontFamily: FONTS.body, fontSize: 14, color: COLORS.text },
-  optionTextSelected: { color: COLORS.surface },
+  optionSelected: {
+    backgroundColor: COLORS.secondary,
+    shadowOffset: BORDERS.shadowOffset,
+    elevation: 4,
+  },
+  optionPressed: {
+    shadowOffset: BORDERS.pressedOffset,
+    transform: [
+      { translateX: BORDERS.pressedTranslateSm.x },
+      { translateY: BORDERS.pressedTranslateSm.y },
+    ],
+  },
+  optionText: {
+    ...TYPOGRAPHY.mono,
+    color: COLORS.onSurface,
+  },
+  optionTextSelected: {
+    color: COLORS.onSecondary,
+  },
 });

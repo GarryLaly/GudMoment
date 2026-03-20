@@ -4,19 +4,24 @@ import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useEffect } from 'react';
+import {
+  DownloadSimpleIcon,
+  UploadSimpleIcon,
+  SquaresFourIcon,
+  ShuffleIcon,
+} from 'phosphor-react-native';
 import { useMoments } from '../../hooks/useMoments';
 import { getAllMoments, createMoment, Moment } from '../../db/moments';
 import { upsertWidgetConfig, getWidgetConfigs } from '../../db/widgetConfig';
 import { updateWidgetData } from '../../utils/widgetBridge';
 import { COLORS, BORDERS, SPACING } from '../../constants/theme';
-import { FONTS } from '../../constants/fonts';
+import { FONTS, TYPOGRAPHY } from '../../constants/fonts';
 import Constants from 'expo-constants';
 
 const INTERVAL_OPTIONS = [
-  { label: '15 min', value: 15 },
-  { label: '30 min', value: 30 },
-  { label: '1 hr', value: 60 },
-  { label: '2 hr', value: 120 },
+  { label: '1H', value: 60 },
+  { label: '6H', value: 360 },
+  { label: '1D', value: 1440 },
 ];
 
 export default function SettingsScreen() {
@@ -25,7 +30,7 @@ export default function SettingsScreen() {
   const [moments, setMoments] = useState<Moment[]>([]);
   const [selectedMultiIds, setSelectedMultiIds] = useState<string[]>([]);
   const [selectedRandomIds, setSelectedRandomIds] = useState<string[]>([]);
-  const [rotationInterval, setRotationInterval] = useState<number>(30);
+  const [rotationInterval, setRotationInterval] = useState<number>(360);
   const [widgetSaving, setWidgetSaving] = useState(false);
 
   useEffect(() => {
@@ -88,7 +93,11 @@ export default function SettingsScreen() {
 
   const handleExport = async () => {
     const allMoments = await getAllMoments();
-    const data = JSON.stringify({ v: 1, moments: allMoments, exportedAt: new Date().toISOString() }, null, 2);
+    const data = JSON.stringify(
+      { v: 1, moments: allMoments, exportedAt: new Date().toISOString() },
+      null,
+      2
+    );
     const path = `${FileSystem.cacheDirectory}gudmoment-backup.json`;
     await FileSystem.writeAsStringAsync(path, data);
     await Sharing.shareAsync(path, { mimeType: 'application/json' });
@@ -129,138 +138,264 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Settings</Text>
+        {/* Title */}
+        <Text style={styles.title}>SETTINGS</Text>
+        <Text style={styles.subtitle}>Configuration & Curator Profile</Text>
 
-        <Text style={styles.sectionTitle}>Data</Text>
-        <Pressable style={styles.button} onPress={handleExport}>
-          <Text style={styles.buttonText}>Export All Moments</Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={handleImport}>
-          <Text style={styles.buttonText}>Import Moments</Text>
-        </Pressable>
+        {/* Data Management */}
+        <Text style={styles.sectionTitle}>DATA MANAGEMENT</Text>
+        <View style={styles.dataRow}>
+          <Pressable
+            style={({ pressed }) => [styles.dataButton, pressed && styles.dataButtonPressed]}
+            onPress={handleExport}
+          >
+            <View style={styles.dataButtonContent}>
+              <Text style={styles.dataButtonAction}>ACTION</Text>
+              <Text style={styles.dataButtonLabel}>Export Data</Text>
+            </View>
+            <DownloadSimpleIcon size={30} color={COLORS.onSurface} weight="bold" />
+          </Pressable>
 
-        {/* Widget Configuration */}
-        <Text style={styles.sectionTitle}>Widget Configuration</Text>
+          <Pressable
+            style={({ pressed }) => [styles.dataButton, pressed && styles.dataButtonPressed]}
+            onPress={handleImport}
+          >
+            <View style={styles.dataButtonContent}>
+              <Text style={styles.dataButtonAction}>ACTION</Text>
+              <Text style={styles.dataButtonLabel}>Import Data</Text>
+            </View>
+            <UploadSimpleIcon size={30} color={COLORS.onSurface} weight="bold" />
+          </Pressable>
+        </View>
 
+        {/* Widget Config */}
+        <Text style={styles.sectionTitle}>WIDGET CONFIG</Text>
+
+        {/* Multi-moment widget */}
         <View style={styles.widgetCard}>
-          <Text style={styles.widgetCardTitle}>Multi-Moment List Widget</Text>
-          <Text style={styles.widgetCardSubtitle}>Select moments to show in the list widget</Text>
+          <View style={styles.widgetCardHeader}>
+            <View style={[styles.iconBadge, { backgroundColor: COLORS.momentTeal }]}>
+              <SquaresFourIcon size={24} color={COLORS.onSurface} weight="bold" />
+            </View>
+            <View style={styles.widgetCardHeaderText}>
+              <Text style={styles.widgetCardTitle}>Multi-moment widget</Text>
+              <Text style={styles.widgetCardSubtitle}>SELECT UP TO 5 MOMENTS TO DISPLAY</Text>
+            </View>
+          </View>
           {moments.length === 0 ? (
             <Text style={styles.emptyText}>No moments yet</Text>
           ) : (
-            moments.map((m) => {
-              const selected = selectedMultiIds.includes(m.id);
-              return (
-                <Pressable
-                  key={m.id}
-                  style={[styles.checkRow, selected && styles.checkRowSelected]}
-                  onPress={() => toggleMultiId(m.id)}
-                >
-                  <View style={[styles.checkbox, selected && styles.checkboxSelected]}>
-                    <Text style={styles.checkboxText}>{selected ? '✓' : '☐'}</Text>
-                  </View>
-                  <Text style={styles.momentEmoji}>{m.emoji}</Text>
-                  <Text style={styles.checkRowLabel} numberOfLines={1}>{m.title}</Text>
-                </Pressable>
-              );
-            })
+            <View style={styles.checkList}>
+              {moments.map((m) => {
+                const selected = selectedMultiIds.includes(m.id);
+                return (
+                  <Pressable
+                    key={m.id}
+                    style={styles.checkRow}
+                    onPress={() => toggleMultiId(m.id)}
+                  >
+                    <View
+                      style={[styles.checkbox, selected && styles.checkboxSelected]}
+                    >
+                      {selected && <Text style={styles.checkboxText}>{'\u2713'}</Text>}
+                    </View>
+                    <Text style={styles.momentEmoji}>{m.emoji}</Text>
+                    <Text style={styles.checkRowLabel} numberOfLines={1}>
+                      {m.title}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
           )}
         </View>
 
+        {/* Random widget */}
         <View style={styles.widgetCard}>
-          <Text style={styles.widgetCardTitle}>Random Rotation Widget</Text>
-          <Text style={styles.widgetCardSubtitle}>Select moments for the random rotation pool</Text>
+          <View style={styles.widgetCardHeader}>
+            <View style={[styles.iconBadge, { backgroundColor: COLORS.accentYellow }]}>
+              <ShuffleIcon size={24} color={COLORS.onSurface} weight="bold" />
+            </View>
+            <View style={styles.widgetCardHeaderText}>
+              <Text style={styles.widgetCardTitle}>Random widget</Text>
+              <Text style={styles.widgetCardSubtitle}>ROTATE THROUGH SELECTED MOMENTS</Text>
+            </View>
+          </View>
           {moments.length === 0 ? (
             <Text style={styles.emptyText}>No moments yet</Text>
           ) : (
-            moments.map((m) => {
-              const selected = selectedRandomIds.includes(m.id);
-              return (
-                <Pressable
-                  key={m.id}
-                  style={[styles.checkRow, selected && styles.checkRowSelected]}
-                  onPress={() => toggleRandomId(m.id)}
-                >
-                  <View style={[styles.checkbox, selected && styles.checkboxSelected]}>
-                    <Text style={styles.checkboxText}>{selected ? '✓' : '☐'}</Text>
-                  </View>
-                  <Text style={styles.momentEmoji}>{m.emoji}</Text>
-                  <Text style={styles.checkRowLabel} numberOfLines={1}>{m.title}</Text>
-                </Pressable>
-              );
-            })
+            <View style={styles.checkList}>
+              {moments.map((m) => {
+                const selected = selectedRandomIds.includes(m.id);
+                return (
+                  <Pressable
+                    key={m.id}
+                    style={styles.checkRow}
+                    onPress={() => toggleRandomId(m.id)}
+                  >
+                    <View
+                      style={[styles.checkbox, selected && styles.checkboxSelected]}
+                    >
+                      {selected && <Text style={styles.checkboxText}>{'\u2713'}</Text>}
+                    </View>
+                    <Text style={styles.momentEmoji}>{m.emoji}</Text>
+                    <Text style={styles.checkRowLabel} numberOfLines={1}>
+                      {m.title}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
           )}
 
           <Text style={styles.intervalLabel}>Rotation Interval</Text>
           <View style={styles.intervalRow}>
-            {INTERVAL_OPTIONS.map((opt) => (
-              <Pressable
-                key={opt.value}
-                style={[styles.intervalBtn, rotationInterval === opt.value && styles.intervalBtnActive]}
-                onPress={() => setRotationInterval(opt.value)}
-              >
-                <Text
-                  style={[styles.intervalBtnText, rotationInterval === opt.value && styles.intervalBtnTextActive]}
+            {INTERVAL_OPTIONS.map((opt) => {
+              const active = rotationInterval === opt.value;
+              return (
+                <Pressable
+                  key={opt.value}
+                  style={({ pressed }) => [
+                    styles.intervalBtn,
+                    active && styles.intervalBtnActive,
+                    pressed && styles.intervalBtnPressed,
+                  ]}
+                  onPress={() => setRotationInterval(opt.value)}
                 >
-                  {opt.label}
-                </Text>
-              </Pressable>
-            ))}
+                  <Text
+                    style={[
+                      styles.intervalBtnText,
+                      active && styles.intervalBtnTextActive,
+                    ]}
+                  >
+                    {opt.label}
+                  </Text>
+                </Pressable>
+              );
+            })}
           </View>
         </View>
 
+        {/* Save Widget Config */}
         <Pressable
-          style={[styles.button, styles.saveButton, widgetSaving && styles.buttonDisabled]}
+          style={({ pressed }) => [
+            styles.saveButton,
+            widgetSaving && styles.buttonDisabled,
+            pressed && styles.saveButtonPressed,
+          ]}
           onPress={handleSaveWidgetConfig}
           disabled={widgetSaving}
         >
-          <Text style={[styles.buttonText, styles.saveButtonText]}>
-            {widgetSaving ? 'Saving...' : 'Save Widget Config'}
+          <Text style={styles.saveButtonText}>
+            {widgetSaving ? 'SAVING...' : 'SAVE WIDGET CONFIG'}
           </Text>
         </Pressable>
 
-        <Text style={styles.sectionTitle}>About</Text>
+        {/* About */}
+        <Text style={styles.sectionTitle}>ABOUT</Text>
         <View style={styles.aboutCard}>
-          <Text style={styles.appName}>GudMoment</Text>
-          <Text style={styles.version}>v{Constants.expoConfig?.version ?? '1.0.0'}</Text>
-          <Text style={styles.aboutText}>Track your special moments.</Text>
-          <Text style={styles.aboutText}>Open source on GitHub.</Text>
+          <Text style={styles.aboutBuildLabel}>BUILD VERSION</Text>
+          <Text style={styles.aboutVersion}>
+            v{Constants.expoConfig?.version ?? '2.4.0'}-{'\n'}BRUTAL
+          </Text>
+          <Text style={styles.aboutLink}>
+            VISIT OFFICIAL SITE {'->'}
+          </Text>
+          <View style={styles.aboutDivider} />
+          <Text style={styles.aboutFooter}>
+            Made with {'<3'} for moments
+          </Text>
         </View>
+
+        <View style={{ height: 40 }} />
       </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.background },
-  content: { padding: SPACING.lg },
-  title: { fontFamily: FONTS.heading, fontSize: 28, color: COLORS.text, marginBottom: SPACING.xl },
-  sectionTitle: { fontFamily: FONTS.bodySemiBold, fontSize: 18, color: COLORS.text, marginTop: SPACING.lg, marginBottom: SPACING.sm },
-  button: {
-    backgroundColor: COLORS.surface,
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.surfaceContainerLowest,
+  },
+  content: {
+    padding: SPACING.page,
+    paddingBottom: 80,
+    backgroundColor: COLORS.surfaceContainerLow,
+  },
+
+  // Title
+  title: {
+    fontFamily: FONTS.heading,
+    fontSize: 40,
+    color: COLORS.onSurface,
+    textTransform: 'uppercase',
+    letterSpacing: -1.5,
+  },
+  subtitle: {
+    fontFamily: FONTS.mono,
+    fontSize: 12,
+    color: COLORS.textMuted,
+    marginTop: SPACING.xs,
+    marginBottom: SPACING.lg,
+  },
+
+  // Section Titles
+  sectionTitle: {
+    fontFamily: FONTS.heading,
+    fontSize: 24,
+    color: COLORS.onSurface,
+    textTransform: 'uppercase',
+    letterSpacing: -0.5,
+    marginTop: SPACING.xl,
+    marginBottom: SPACING.md,
+  },
+
+  // Data Management Buttons
+  dataRow: {
+    gap: SPACING.sm,
+  },
+  dataButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#FAFAFA',
     borderWidth: BORDERS.width,
     borderColor: COLORS.border,
-    padding: SPACING.lg,
-    marginBottom: SPACING.sm,
+    padding: SPACING.md,
     shadowColor: BORDERS.shadowColor,
     shadowOffset: BORDERS.shadowOffset,
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 4,
   },
-  buttonDisabled: {
-    opacity: 0.5,
+  dataButtonPressed: {
+    shadowOffset: BORDERS.pressedOffset,
+    transform: [
+      { translateX: BORDERS.pressedTranslate.x },
+      { translateY: BORDERS.pressedTranslate.y },
+    ],
   },
-  buttonText: { fontFamily: FONTS.bodySemiBold, fontSize: 16, color: COLORS.text },
-  saveButton: {
-    backgroundColor: COLORS.primary,
-    marginTop: SPACING.sm,
+  dataButtonContent: {
+    flex: 1,
   },
-  saveButtonText: {
-    color: COLORS.surface,
+  dataButtonAction: {
+    fontFamily: FONTS.monoBold,
+    fontSize: 10,
+    color: COLORS.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+    marginBottom: 2,
   },
+  dataButtonLabel: {
+    fontFamily: FONTS.bodyBold,
+    fontSize: 18,
+    color: COLORS.onSurface,
+  },
+
+  // Widget Cards
   widgetCard: {
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.surfaceContainerLowest,
     borderWidth: BORDERS.width,
     borderColor: COLORS.border,
     padding: SPACING.md,
@@ -271,71 +406,95 @@ const styles = StyleSheet.create({
     shadowRadius: 0,
     elevation: 4,
   },
-  widgetCardTitle: {
-    fontFamily: FONTS.bodySemiBold,
-    fontSize: 15,
-    color: COLORS.text,
-    marginBottom: SPACING.xs,
-  },
-  widgetCardSubtitle: {
-    fontFamily: FONTS.body,
-    fontSize: 13,
-    color: COLORS.textLight,
-    marginBottom: SPACING.sm,
-  },
-  emptyText: {
-    fontFamily: FONTS.body,
-    fontSize: 14,
-    color: COLORS.textLight,
-    fontStyle: 'italic',
-  },
-  checkRow: {
+  widgetCardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: SPACING.xs,
-    paddingHorizontal: SPACING.sm,
-    marginBottom: 4,
-    borderWidth: 2,
-    borderColor: 'transparent',
+    marginBottom: SPACING.md,
+    gap: SPACING.sm,
   },
-  checkRowSelected: {
-    borderColor: COLORS.primary,
-    backgroundColor: '#FFF0F0',
-  },
-  checkbox: {
-    width: 28,
-    height: 28,
+  iconBadge: {
+    width: 40,
+    height: 40,
     borderWidth: 2,
     borderColor: COLORS.border,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  widgetCardHeaderText: {
+    flex: 1,
+  },
+  widgetCardTitle: {
+    fontFamily: FONTS.heading,
+    fontSize: 16,
+    color: COLORS.onSurface,
+    letterSpacing: -0.3,
+  },
+  widgetCardSubtitle: {
+    fontFamily: FONTS.monoBold,
+    fontSize: 10,
+    color: COLORS.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginTop: 2,
+  },
+  emptyText: {
+    ...TYPOGRAPHY.body,
+    color: COLORS.textMuted,
+    fontStyle: 'italic',
+  },
+
+  // Checklist
+  checkList: {
+    backgroundColor: COLORS.surfaceContainerLow,
+    gap: SPACING.xs,
+    padding: SPACING.xs,
+  },
+  checkRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.sm,
+    backgroundColor: COLORS.surfaceContainerLow,
+    borderWidth: BORDERS.width,
+    borderColor: COLORS.border,
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderWidth: BORDERS.width,
+    borderColor: COLORS.border,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginRight: SPACING.sm,
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.surfaceContainerLowest,
   },
   checkboxSelected: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
+    backgroundColor: COLORS.primaryContainer,
+    borderColor: COLORS.border,
   },
   checkboxText: {
     fontFamily: FONTS.bodySemiBold,
     fontSize: 14,
-    color: COLORS.surface,
+    color: COLORS.onPrimary,
   },
   momentEmoji: {
     fontSize: 18,
     marginRight: SPACING.sm,
   },
   checkRowLabel: {
-    fontFamily: FONTS.body,
-    fontSize: 14,
-    color: COLORS.text,
+    ...TYPOGRAPHY.body,
+    color: COLORS.onSurface,
     flex: 1,
   },
+
+  // Interval buttons
   intervalLabel: {
-    fontFamily: FONTS.bodySemiBold,
-    fontSize: 14,
-    color: COLORS.text,
-    marginTop: SPACING.md,
+    fontFamily: FONTS.monoBold,
+    fontSize: 10,
+    color: COLORS.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+    marginTop: SPACING.lg,
     marginBottom: SPACING.sm,
   },
   intervalRow: {
@@ -348,28 +507,106 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
     paddingVertical: SPACING.sm,
     alignItems: 'center',
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.surfaceContainerLowest,
   },
   intervalBtnActive: {
-    backgroundColor: COLORS.accent,
-    borderColor: COLORS.border,
+    backgroundColor: COLORS.primaryContainer,
+    shadowColor: BORDERS.shadowColor,
+    shadowOffset: BORDERS.shadowSm,
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 2,
+  },
+  intervalBtnPressed: {
+    shadowOffset: { width: 0, height: 0 },
+    transform: [{ translateX: 2 }, { translateY: 2 }],
   },
   intervalBtnText: {
-    fontFamily: FONTS.mono,
+    fontFamily: FONTS.monoBold,
     fontSize: 12,
-    color: COLORS.text,
+    color: COLORS.onSurface,
   },
   intervalBtnTextActive: {
-    fontFamily: FONTS.monoBold,
-    color: COLORS.text,
+    color: COLORS.onPrimary,
   },
-  aboutCard: {
-    backgroundColor: COLORS.surface,
+
+  // Save button
+  saveButton: {
+    backgroundColor: COLORS.primaryContainer,
     borderWidth: BORDERS.width,
     borderColor: COLORS.border,
     padding: SPACING.lg,
+    marginTop: SPACING.md,
+    alignItems: 'center',
+    shadowColor: BORDERS.shadowColor,
+    shadowOffset: BORDERS.shadowOffset,
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 4,
   },
-  appName: { fontFamily: FONTS.heading, fontSize: 22, color: COLORS.primary },
-  version: { fontFamily: FONTS.mono, fontSize: 14, color: COLORS.textLight, marginTop: SPACING.xs },
-  aboutText: { fontFamily: FONTS.body, fontSize: 14, color: COLORS.text, marginTop: SPACING.sm },
+  saveButtonPressed: {
+    shadowOffset: BORDERS.pressedOffset,
+    transform: [
+      { translateX: BORDERS.pressedTranslate.x },
+      { translateY: BORDERS.pressedTranslate.y },
+    ],
+  },
+  buttonDisabled: {
+    opacity: 0.5,
+  },
+  saveButtonText: {
+    fontFamily: FONTS.heading,
+    fontSize: 18,
+    color: COLORS.onPrimary,
+    textTransform: 'uppercase',
+    letterSpacing: -0.3,
+  },
+
+  // About
+  aboutCard: {
+    backgroundColor: COLORS.onSurface,
+    borderWidth: BORDERS.width,
+    borderColor: COLORS.border,
+    padding: SPACING.lg,
+    shadowColor: BORDERS.shadowColor,
+    shadowOffset: BORDERS.shadowOffset,
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 4,
+  },
+  aboutBuildLabel: {
+    fontFamily: FONTS.monoBold,
+    fontSize: 10,
+    color: COLORS.momentTeal,
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+  },
+  aboutVersion: {
+    fontFamily: FONTS.heading,
+    fontSize: 30,
+    color: COLORS.onPrimary,
+    letterSpacing: -1,
+    marginTop: SPACING.xs,
+  },
+  aboutLink: {
+    fontFamily: FONTS.monoBold,
+    fontSize: 12,
+    color: COLORS.primaryContainer,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginTop: SPACING.md,
+    textDecorationLine: 'underline',
+  },
+  aboutDivider: {
+    height: 1,
+    backgroundColor: '#444',
+    marginVertical: SPACING.md,
+  },
+  aboutFooter: {
+    fontFamily: FONTS.mono,
+    fontSize: 12,
+    color: COLORS.textMuted,
+    fontStyle: 'italic',
+    textAlign: 'center',
+  },
 });

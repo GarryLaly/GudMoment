@@ -4,6 +4,6 @@ export const MOMENT_COLORS = [
 ] as const;
 
 export const EMOJI_PRESETS = [
-  '❤️', '💍', '🎂', '🎓', '✈️', '🏠', '👶', '🐾',
-  '🎉', '💐', '🌟', '📅', '🎯', '🏆', '💝', '🌈',
+  '\u2764\uFE0F', '\uD83D\uDC8D', '\uD83C\uDF82', '\uD83C\uDF93', '\u2708\uFE0F', '\uD83C\uDFE0', '\uD83D\uDC76', '\uD83D\uDC3E',
+  '\uD83C\uDF89', '\uD83D\uDC90', '\uD83C\uDF1F', '\uD83D\uDCC5', '\uD83C\uDFAF', '\uD83C\uDFC6', '\uD83D\uDC9D', '\uD83C\uDF08',
 ] as const;

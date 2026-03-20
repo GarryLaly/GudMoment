@@ -3,11 +3,12 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import DraggableFlatList, { ScaleDecorator, RenderItemParams } from 'react-native-draggable-flatlist';
+import { QrCodeIcon, PlusIcon } from 'phosphor-react-native';
 import { useMoments } from '../../hooks/useMoments';
 import { MomentCard } from '../../components/MomentCard';
 import { EmptyState } from '../../components/EmptyState';
 import { COLORS, BORDERS, SPACING } from '../../constants/theme';
-import { FONTS } from '../../constants/fonts';
+import { FONTS, TYPOGRAPHY } from '../../constants/fonts';
 import type { Moment } from '../../db/moments';
 
 export default function HomeScreen() {
@@ -22,17 +23,35 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
+      {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>GudMoment</Text>
-        <Pressable style={styles.scanButton} onPress={() => router.push('/scan')}>
-          <Text style={styles.scanIcon}>📷</Text>
+        <View style={styles.logoChip}>
+          <Text style={styles.logoText}>GUDMOMENT</Text>
+        </View>
+        <Pressable
+          style={({ pressed }) => [styles.scanButton, pressed && styles.scanButtonPressed]}
+          onPress={() => router.push('/scan')}
+        >
+          <QrCodeIcon size={22} color={COLORS.onSurface} weight="bold" />
         </Pressable>
       </View>
 
+      {/* Section header */}
+      <View style={[styles.sectionHeader, { backgroundColor: COLORS.surfaceContainerLow }]}>
+        <View style={styles.sectionLeft}>
+          <Text style={[styles.liveFeedLabel]}>LIVE FEED</Text>
+          <Text style={styles.sectionTitle}>Your Moments</Text>
+        </View>
+        <View style={styles.countBadge}>
+          <Text style={styles.countText}>COUNT: {moments.length.toString().padStart(2, '0')}</Text>
+        </View>
+      </View>
+
+      {/* Content */}
       {moments.length === 0 && !loading ? (
         <EmptyState />
       ) : (
-        <GestureHandlerRootView style={{ flex: 1 }}>
+        <GestureHandlerRootView style={{ flex: 1, backgroundColor: COLORS.surfaceContainerLow }}>
           <DraggableFlatList
             data={moments}
             keyExtractor={(item) => item.id}
@@ -43,29 +62,132 @@ export default function HomeScreen() {
         </GestureHandlerRootView>
       )}
 
-      <Pressable style={styles.fab} onPress={() => router.push('/moment/create')}>
-        <Text style={styles.fabText}>+</Text>
+      {/* FAB */}
+      <Pressable
+        style={({ pressed }) => [styles.fab, pressed && styles.fabPressed]}
+        onPress={() => router.push('/moment/create')}
+      >
+        <PlusIcon size={32} color={COLORS.onSurface} weight="bold" />
       </Pressable>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.background },
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.surfaceContainerLowest,
+  },
   header: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-    padding: SPACING.lg, borderBottomWidth: BORDERS.width, borderBottomColor: COLORS.border, backgroundColor: COLORS.surface,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: SPACING.page,
+    paddingTop: SPACING.md,
+    paddingBottom: SPACING.md,
+    borderBottomWidth: BORDERS.width,
+    borderBottomColor: COLORS.border,
+    backgroundColor: COLORS.surfaceContainerLowest,
   },
-  title: { fontFamily: FONTS.heading, fontSize: 28, color: COLORS.text },
-  scanButton: { width: 44, height: 44, justifyContent: 'center', alignItems: 'center', borderWidth: BORDERS.width, borderColor: COLORS.border },
-  scanIcon: { fontSize: 22 },
-  list: { paddingTop: SPACING.md, paddingBottom: 100 },
+  logoChip: {
+    backgroundColor: COLORS.accentYellow,
+    borderWidth: 2,
+    borderColor: COLORS.border,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.xs,
+    shadowColor: BORDERS.shadowColor,
+    shadowOffset: BORDERS.shadowSm,
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 2,
+  },
+  logoText: {
+    fontFamily: FONTS.heading,
+    fontSize: 18,
+    color: COLORS.onSurface,
+    textTransform: 'uppercase',
+    letterSpacing: -0.5,
+  },
+  scanButton: {
+    width: 48,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: BORDERS.width,
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.surfaceContainerLowest,
+    shadowColor: BORDERS.shadowColor,
+    shadowOffset: BORDERS.shadowSm,
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 2,
+  },
+  scanButtonPressed: {
+    shadowOffset: BORDERS.pressedOffset,
+    transform: [{ translateX: BORDERS.pressedTranslateSm.x }, { translateY: BORDERS.pressedTranslateSm.y }],
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingHorizontal: SPACING.page,
+    paddingTop: SPACING.lg,
+    paddingBottom: SPACING.md,
+  },
+  sectionLeft: {
+    flex: 1,
+  },
+  liveFeedLabel: {
+    ...TYPOGRAPHY.labelMono,
+    color: COLORS.primary,
+    marginBottom: SPACING.xs,
+  },
+  sectionTitle: {
+    ...TYPOGRAPHY.headline,
+    fontSize: 32,
+    color: COLORS.onSurface,
+  },
+  countBadge: {
+    backgroundColor: COLORS.surfaceContainerHigh,
+    borderWidth: BORDERS.width,
+    borderColor: COLORS.border,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.xs,
+    shadowColor: BORDERS.shadowColor,
+    shadowOffset: BORDERS.shadowSm,
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 2,
+  },
+  countText: {
+    fontFamily: FONTS.mono,
+    fontSize: 12,
+    color: COLORS.onSurface,
+    textTransform: 'uppercase',
+  },
+  list: {
+    paddingTop: SPACING.md,
+    paddingBottom: 100,
+  },
   fab: {
-    position: 'absolute', right: SPACING.lg, bottom: SPACING.xl + 60,
-    width: 64, height: 64, backgroundColor: COLORS.primary,
-    borderWidth: BORDERS.width, borderColor: COLORS.border,
-    justifyContent: 'center', alignItems: 'center',
-    shadowColor: BORDERS.shadowColor, shadowOffset: BORDERS.shadowOffset, shadowOpacity: 1, shadowRadius: 0, elevation: 6,
+    position: 'absolute',
+    right: SPACING.page,
+    bottom: SPACING.xl + 60,
+    width: 64,
+    height: 64,
+    backgroundColor: COLORS.accentYellow,
+    borderWidth: BORDERS.width,
+    borderColor: COLORS.border,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: BORDERS.shadowColor,
+    shadowOffset: BORDERS.shadowOffset,
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 4,
   },
-  fabText: { fontFamily: FONTS.heading, fontSize: 32, color: COLORS.surface, marginTop: -2 },
+  fabPressed: {
+    shadowOffset: BORDERS.pressedOffset,
+    transform: [{ translateX: BORDERS.pressedTranslate.x }, { translateY: BORDERS.pressedTranslate.y }],
+  },
 });
