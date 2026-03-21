@@ -3,8 +3,9 @@ import { View, Text, TextInput, Pressable, Switch, ScrollView, StyleSheet, Platf
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { EmojiPicker } from './EmojiPicker';
 import { ColorPicker } from './ColorPicker';
-import { COLORS, BORDERS, SPACING } from '../constants/theme';
+import { BORDERS, SPACING } from '../constants/theme';
 import { FONTS, TYPOGRAPHY } from '../constants/fonts';
+import { useTheme } from '../hooks/useTheme';
 import type { CreateMomentInput } from '../db/moments';
 
 interface Props {
@@ -14,6 +15,8 @@ interface Props {
 }
 
 export function MomentForm({ initialValues, onSubmit, submitLabel }: Props) {
+  const { colors, borders } = useTheme();
+
   const [title, setTitle] = useState(initialValues?.title ?? '');
   const [date, setDate] = useState<Date>(() => {
     if (initialValues?.date) return new Date(initialValues.date);
@@ -49,16 +52,20 @@ export function MomentForm({ initialValues, onSubmit, submitLabel }: Props) {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]} contentContainerStyle={styles.content}>
       {/* MOMENT IDENTITY */}
-      <Text style={styles.sectionHeader}>MOMENT IDENTITY</Text>
+      <Text style={[styles.sectionHeader, { color: colors.primary }]}>MOMENT IDENTITY</Text>
 
       <TextInput
-        style={[styles.input, titleFocused && styles.inputFocused]}
+        style={[
+          styles.input,
+          { color: colors.onSurface, borderColor: colors.border, backgroundColor: colors.surfaceContainerLowest, shadowColor: borders.shadowColor },
+          titleFocused && [styles.inputFocused, { borderColor: colors.primary, shadowColor: colors.primary }],
+        ]}
         value={title}
         onChangeText={setTitle}
         placeholder="GIVE IT A CHUNKY NAME..."
-        placeholderTextColor={COLORS.textMuted}
+        placeholderTextColor={colors.textMuted}
         maxLength={100}
         testID="title-input"
         accessibilityLabel="Moment title"
@@ -69,10 +76,14 @@ export function MomentForm({ initialValues, onSubmit, submitLabel }: Props) {
 
       <View style={styles.dateTimeSection}>
         <Pressable
-          style={({ pressed }) => [styles.dateButton, pressed && styles.dateButtonPressed]}
+          style={({ pressed }) => [
+            styles.dateButton,
+            { borderColor: colors.border, backgroundColor: colors.surfaceContainerLowest, shadowColor: borders.shadowColor },
+            pressed && styles.dateButtonPressed,
+          ]}
           onPress={() => setShowDatePicker(true)}
         >
-          <Text style={styles.dateText}>{date.toLocaleDateString()}</Text>
+          <Text style={[styles.dateText, { color: colors.onSurface }]}>{date.toLocaleDateString()}</Text>
         </Pressable>
         {showDatePicker && (
           <DateTimePicker value={date} mode="date" maximumDate={new Date()}
@@ -80,20 +91,24 @@ export function MomentForm({ initialValues, onSubmit, submitLabel }: Props) {
         )}
 
         <View style={styles.timeToggleRow}>
-          <Text style={styles.timeToggleLabel}>Enable</Text>
+          <Text style={[styles.timeToggleLabel, { color: colors.onSurface }]}>Enable</Text>
           <Switch value={includeTime} onValueChange={setIncludeTime}
-            trackColor={{ true: COLORS.primary, false: COLORS.surfaceContainerHigh }}
-            thumbColor={includeTime ? COLORS.primaryContainer : COLORS.surfaceContainerLowest}
+            trackColor={{ true: colors.primary, false: colors.surfaceContainerHigh }}
+            thumbColor={includeTime ? colors.primaryContainer : colors.surfaceContainerLowest}
           />
         </View>
 
         {includeTime && (
           <>
             <Pressable
-              style={({ pressed }) => [styles.dateButton, pressed && styles.dateButtonPressed]}
+              style={({ pressed }) => [
+                styles.dateButton,
+                { borderColor: colors.border, backgroundColor: colors.surfaceContainerLowest, shadowColor: borders.shadowColor },
+                pressed && styles.dateButtonPressed,
+              ]}
               onPress={() => setShowTimePicker(true)}
             >
-              <Text style={styles.dateText}>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+              <Text style={[styles.dateText, { color: colors.onSurface }]}>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
             </Pressable>
             {showTimePicker && (
               <DateTimePicker value={time} mode="time"
@@ -104,51 +119,48 @@ export function MomentForm({ initialValues, onSubmit, submitLabel }: Props) {
       </View>
 
       {/* THE VIBE */}
-      <Text style={styles.sectionHeader}>THE VIBE</Text>
+      <Text style={[styles.sectionHeader, { color: colors.primary }]}>THE VIBE</Text>
       <EmojiPicker selected={emoji} onSelect={setEmoji} />
 
       {/* MOMENT PALETTE */}
-      <Text style={styles.sectionHeader}>MOMENT PALETTE</Text>
+      <Text style={[styles.sectionHeader, { color: colors.primary }]}>MOMENT PALETTE</Text>
       <ColorPicker selected={color} onSelect={setColor} />
 
       {/* Submit */}
       <Pressable
-        style={({ pressed }) => [styles.submitButton, pressed && styles.submitPressed]}
+        style={({ pressed }) => [
+          styles.submitButton,
+          { backgroundColor: colors.momentTeal, borderColor: colors.border, shadowColor: borders.shadowColor },
+          pressed && styles.submitPressed,
+        ]}
         onPress={handleSubmit}
       >
-        <Text style={styles.submitText}>{submitLabel}</Text>
+        <Text style={[styles.submitText, { color: colors.onPrimary }]}>{submitLabel}</Text>
       </Pressable>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.background },
+  container: { flex: 1 },
   content: { padding: SPACING.page, paddingBottom: 100 },
   sectionHeader: {
     ...TYPOGRAPHY.section,
-    color: COLORS.primary,
     marginBottom: SPACING.md,
     marginTop: SPACING.xl,
   },
   input: {
     fontFamily: FONTS.bodyBold,
     fontSize: 18,
-    color: COLORS.onSurface,
     borderWidth: BORDERS.width,
-    borderColor: COLORS.border,
     padding: SPACING.md,
-    backgroundColor: COLORS.surfaceContainerLowest,
-    shadowColor: BORDERS.shadowColor,
     shadowOffset: BORDERS.shadowOffset,
     shadowOpacity: 1,
     shadowRadius: 0,
     elevation: 4,
   },
   inputFocused: {
-    borderColor: COLORS.primary,
     shadowOffset: BORDERS.shadowXl,
-    shadowColor: COLORS.primary,
     elevation: 8,
   },
   dateTimeSection: {
@@ -157,10 +169,7 @@ const styles = StyleSheet.create({
   },
   dateButton: {
     borderWidth: BORDERS.width,
-    borderColor: COLORS.border,
     padding: SPACING.md,
-    backgroundColor: COLORS.surfaceContainerLowest,
-    shadowColor: BORDERS.shadowColor,
     shadowOffset: BORDERS.shadowOffset,
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -175,7 +184,6 @@ const styles = StyleSheet.create({
   },
   dateText: {
     ...TYPOGRAPHY.monoLg,
-    color: COLORS.onSurface,
   },
   timeToggleRow: {
     flexDirection: 'row',
@@ -184,16 +192,12 @@ const styles = StyleSheet.create({
   },
   timeToggleLabel: {
     ...TYPOGRAPHY.mono,
-    color: COLORS.onSurface,
   },
   submitButton: {
     marginTop: SPACING.xl,
-    backgroundColor: COLORS.momentTeal,
     borderWidth: BORDERS.width,
-    borderColor: COLORS.border,
     padding: SPACING.lg,
     alignItems: 'center',
-    shadowColor: BORDERS.shadowColor,
     shadowOffset: BORDERS.shadowOffset,
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -208,7 +212,6 @@ const styles = StyleSheet.create({
   },
   submitText: {
     ...TYPOGRAPHY.headline,
-    color: COLORS.onPrimary,
     textTransform: 'uppercase',
   },
 });

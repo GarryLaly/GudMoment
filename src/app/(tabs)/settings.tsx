@@ -9,8 +9,13 @@ import {
   UploadSimpleIcon,
   SquaresFourIcon,
   ShuffleIcon,
+  SunIcon,
+  MoonIcon,
+  DevicesIcon,
 } from 'phosphor-react-native';
+import type { ThemePreference } from '../../context/ThemeContext';
 import { useMoments } from '../../hooks/useMoments';
+import { useTheme } from '../../hooks/useTheme';
 import { getAllMoments, createMoment, Moment } from '../../db/moments';
 import { upsertWidgetConfig, getWidgetConfigs } from '../../db/widgetConfig';
 import { updateWidgetData } from '../../utils/widgetBridge';
@@ -26,6 +31,13 @@ const INTERVAL_OPTIONS = [
 
 export default function SettingsScreen() {
   const { loadMoments } = useMoments();
+  const { colors, borders, isDark, preference, setPreference } = useTheme();
+
+  const THEME_OPTIONS: { label: string; value: ThemePreference; icon: typeof SunIcon }[] = [
+    { label: 'SYSTEM', value: 'system', icon: DevicesIcon },
+    { label: 'LIGHT', value: 'light', icon: SunIcon },
+    { label: 'DARK', value: 'dark', icon: MoonIcon },
+  ];
 
   const [moments, setMoments] = useState<Moment[]>([]);
   const [selectedMultiIds, setSelectedMultiIds] = useState<string[]>([]);
@@ -136,71 +148,71 @@ export default function SettingsScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.content}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.surfaceContainerLowest }]} edges={['top']}>
+      <ScrollView contentContainerStyle={[styles.content, { backgroundColor: colors.surfaceContainerLow }]}>
         {/* Title */}
-        <Text style={styles.title}>SETTINGS</Text>
-        <Text style={styles.subtitle}>Configuration & Curator Profile</Text>
+        <Text style={[styles.title, { color: colors.onSurface }]}>SETTINGS</Text>
+        <Text style={[styles.subtitle, { color: colors.textMuted }]}>Configuration & Curator Profile</Text>
 
         {/* Data Management */}
-        <Text style={styles.sectionTitle}>DATA MANAGEMENT</Text>
+        <Text style={[styles.sectionTitle, { color: colors.onSurface }]}>DATA MANAGEMENT</Text>
         <View style={styles.dataRow}>
           <Pressable
-            style={({ pressed }) => [styles.dataButton, pressed && styles.dataButtonPressed]}
+            style={({ pressed }) => [styles.dataButton, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.dataButtonPressed]}
             onPress={handleExport}
           >
             <View style={styles.dataButtonContent}>
-              <Text style={styles.dataButtonAction}>ACTION</Text>
-              <Text style={styles.dataButtonLabel}>Export Data</Text>
+              <Text style={[styles.dataButtonAction, { color: colors.textMuted }]}>ACTION</Text>
+              <Text style={[styles.dataButtonLabel, { color: colors.onSurface }]}>Export Data</Text>
             </View>
-            <DownloadSimpleIcon size={30} color={COLORS.onSurface} weight="bold" />
+            <DownloadSimpleIcon size={30} color={colors.onSurface} weight="bold" />
           </Pressable>
 
           <Pressable
-            style={({ pressed }) => [styles.dataButton, pressed && styles.dataButtonPressed]}
+            style={({ pressed }) => [styles.dataButton, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.dataButtonPressed]}
             onPress={handleImport}
           >
             <View style={styles.dataButtonContent}>
-              <Text style={styles.dataButtonAction}>ACTION</Text>
-              <Text style={styles.dataButtonLabel}>Import Data</Text>
+              <Text style={[styles.dataButtonAction, { color: colors.textMuted }]}>ACTION</Text>
+              <Text style={[styles.dataButtonLabel, { color: colors.onSurface }]}>Import Data</Text>
             </View>
-            <UploadSimpleIcon size={30} color={COLORS.onSurface} weight="bold" />
+            <UploadSimpleIcon size={30} color={colors.onSurface} weight="bold" />
           </Pressable>
         </View>
 
         {/* Widget Config */}
-        <Text style={styles.sectionTitle}>WIDGET CONFIG</Text>
+        <Text style={[styles.sectionTitle, { color: colors.onSurface }]}>WIDGET CONFIG</Text>
 
         {/* Multi-moment widget */}
-        <View style={styles.widgetCard}>
+        <View style={[styles.widgetCard, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
           <View style={styles.widgetCardHeader}>
-            <View style={[styles.iconBadge, { backgroundColor: COLORS.momentTeal }]}>
-              <SquaresFourIcon size={24} color={COLORS.onSurface} weight="bold" />
+            <View style={[styles.iconBadge, { backgroundColor: colors.momentTeal, borderColor: colors.border }]}>
+              <SquaresFourIcon size={24} color={colors.onSurface} weight="bold" />
             </View>
             <View style={styles.widgetCardHeaderText}>
-              <Text style={styles.widgetCardTitle}>Multi-moment widget</Text>
-              <Text style={styles.widgetCardSubtitle}>SELECT UP TO 5 MOMENTS TO DISPLAY</Text>
+              <Text style={[styles.widgetCardTitle, { color: colors.onSurface }]}>Multi-moment widget</Text>
+              <Text style={[styles.widgetCardSubtitle, { color: colors.textMuted }]}>SELECT UP TO 5 MOMENTS TO DISPLAY</Text>
             </View>
           </View>
           {moments.length === 0 ? (
-            <Text style={styles.emptyText}>No moments yet</Text>
+            <Text style={[styles.emptyText, { color: colors.textMuted }]}>No moments yet</Text>
           ) : (
-            <View style={styles.checkList}>
+            <View style={[styles.checkList, { backgroundColor: colors.surfaceContainerLow }]}>
               {moments.map((m) => {
                 const selected = selectedMultiIds.includes(m.id);
                 return (
                   <Pressable
                     key={m.id}
-                    style={styles.checkRow}
+                    style={[styles.checkRow, { backgroundColor: colors.surfaceContainerLow, borderColor: colors.border }]}
                     onPress={() => toggleMultiId(m.id)}
                   >
                     <View
-                      style={[styles.checkbox, selected && styles.checkboxSelected]}
+                      style={[styles.checkbox, { borderColor: colors.border, backgroundColor: colors.surfaceContainerLowest }, selected && [styles.checkboxSelected, { backgroundColor: colors.primaryContainer, borderColor: colors.border }]]}
                     >
-                      {selected && <Text style={styles.checkboxText}>{'\u2713'}</Text>}
+                      {selected && <Text style={[styles.checkboxText, { color: colors.onPrimary }]}>{'\u2713'}</Text>}
                     </View>
                     <Text style={styles.momentEmoji}>{m.emoji}</Text>
-                    <Text style={styles.checkRowLabel} numberOfLines={1}>
+                    <Text style={[styles.checkRowLabel, { color: colors.onSurface }]} numberOfLines={1}>
                       {m.title}
                     </Text>
                   </Pressable>
@@ -211,35 +223,35 @@ export default function SettingsScreen() {
         </View>
 
         {/* Random widget */}
-        <View style={styles.widgetCard}>
+        <View style={[styles.widgetCard, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
           <View style={styles.widgetCardHeader}>
-            <View style={[styles.iconBadge, { backgroundColor: COLORS.accentYellow }]}>
-              <ShuffleIcon size={24} color={COLORS.onSurface} weight="bold" />
+            <View style={[styles.iconBadge, { backgroundColor: colors.accentYellow, borderColor: colors.border }]}>
+              <ShuffleIcon size={24} color={colors.onSurface} weight="bold" />
             </View>
             <View style={styles.widgetCardHeaderText}>
-              <Text style={styles.widgetCardTitle}>Random widget</Text>
-              <Text style={styles.widgetCardSubtitle}>ROTATE THROUGH SELECTED MOMENTS</Text>
+              <Text style={[styles.widgetCardTitle, { color: colors.onSurface }]}>Random widget</Text>
+              <Text style={[styles.widgetCardSubtitle, { color: colors.textMuted }]}>ROTATE THROUGH SELECTED MOMENTS</Text>
             </View>
           </View>
           {moments.length === 0 ? (
-            <Text style={styles.emptyText}>No moments yet</Text>
+            <Text style={[styles.emptyText, { color: colors.textMuted }]}>No moments yet</Text>
           ) : (
-            <View style={styles.checkList}>
+            <View style={[styles.checkList, { backgroundColor: colors.surfaceContainerLow }]}>
               {moments.map((m) => {
                 const selected = selectedRandomIds.includes(m.id);
                 return (
                   <Pressable
                     key={m.id}
-                    style={styles.checkRow}
+                    style={[styles.checkRow, { backgroundColor: colors.surfaceContainerLow, borderColor: colors.border }]}
                     onPress={() => toggleRandomId(m.id)}
                   >
                     <View
-                      style={[styles.checkbox, selected && styles.checkboxSelected]}
+                      style={[styles.checkbox, { borderColor: colors.border, backgroundColor: colors.surfaceContainerLowest }, selected && [styles.checkboxSelected, { backgroundColor: colors.primaryContainer, borderColor: colors.border }]]}
                     >
-                      {selected && <Text style={styles.checkboxText}>{'\u2713'}</Text>}
+                      {selected && <Text style={[styles.checkboxText, { color: colors.onPrimary }]}>{'\u2713'}</Text>}
                     </View>
                     <Text style={styles.momentEmoji}>{m.emoji}</Text>
-                    <Text style={styles.checkRowLabel} numberOfLines={1}>
+                    <Text style={[styles.checkRowLabel, { color: colors.onSurface }]} numberOfLines={1}>
                       {m.title}
                     </Text>
                   </Pressable>
@@ -248,7 +260,7 @@ export default function SettingsScreen() {
             </View>
           )}
 
-          <Text style={styles.intervalLabel}>Rotation Interval</Text>
+          <Text style={[styles.intervalLabel, { color: colors.textMuted }]}>Rotation Interval</Text>
           <View style={styles.intervalRow}>
             {INTERVAL_OPTIONS.map((opt) => {
               const active = rotationInterval === opt.value;
@@ -257,7 +269,8 @@ export default function SettingsScreen() {
                   key={opt.value}
                   style={({ pressed }) => [
                     styles.intervalBtn,
-                    active && styles.intervalBtnActive,
+                    { borderColor: colors.border, backgroundColor: colors.surfaceContainerLowest },
+                    active && [styles.intervalBtnActive, { backgroundColor: colors.primaryContainer, shadowColor: borders.shadowColor }],
                     pressed && styles.intervalBtnPressed,
                   ]}
                   onPress={() => setRotationInterval(opt.value)}
@@ -265,7 +278,8 @@ export default function SettingsScreen() {
                   <Text
                     style={[
                       styles.intervalBtnText,
-                      active && styles.intervalBtnTextActive,
+                      { color: colors.onSurface },
+                      active && [styles.intervalBtnTextActive, { color: colors.onPrimary }],
                     ]}
                   >
                     {opt.label}
@@ -280,29 +294,77 @@ export default function SettingsScreen() {
         <Pressable
           style={({ pressed }) => [
             styles.saveButton,
+            { backgroundColor: colors.primaryContainer, borderColor: colors.border, shadowColor: borders.shadowColor },
             widgetSaving && styles.buttonDisabled,
             pressed && styles.saveButtonPressed,
           ]}
           onPress={handleSaveWidgetConfig}
           disabled={widgetSaving}
         >
-          <Text style={styles.saveButtonText}>
+          <Text style={[styles.saveButtonText, { color: colors.onPrimary }]}>
             {widgetSaving ? 'SAVING...' : 'SAVE WIDGET CONFIG'}
           </Text>
         </Pressable>
 
+        {/* Appearance */}
+        <Text style={[styles.sectionTitle, { color: colors.onSurface }]}>APPEARANCE</Text>
+        <View style={[styles.widgetCard, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
+          <View style={styles.widgetCardHeader}>
+            <View style={[styles.iconBadge, { backgroundColor: colors.momentTeal, borderColor: colors.border }]}>
+              <MoonIcon size={24} color={colors.onSurface} weight="bold" />
+            </View>
+            <View style={styles.widgetCardHeaderText}>
+              <Text style={[styles.widgetCardTitle, { color: colors.onSurface }]}>Theme</Text>
+              <Text style={[styles.widgetCardSubtitle, { color: colors.textMuted }]}>CHOOSE LIGHT, DARK, OR SYSTEM DEFAULT</Text>
+            </View>
+          </View>
+          <View style={styles.intervalRow}>
+            {THEME_OPTIONS.map((opt) => {
+              const active = preference === opt.value;
+              const Icon = opt.icon;
+              return (
+                <Pressable
+                  key={opt.value}
+                  style={({ pressed }) => [
+                    styles.themeBtn,
+                    { borderColor: colors.border, backgroundColor: colors.surfaceContainerLowest },
+                    active && { backgroundColor: colors.primaryContainer, shadowColor: borders.shadowColor, shadowOffset: BORDERS.shadowSm, shadowOpacity: 1, shadowRadius: 0, elevation: 2 },
+                    pressed && styles.intervalBtnPressed,
+                  ]}
+                  onPress={() => setPreference(opt.value)}
+                >
+                  <Icon size={18} color={active ? colors.onPrimary : colors.onSurface} weight={active ? 'fill' : 'regular'} />
+                  <Text
+                    style={[
+                      styles.intervalBtnText,
+                      { color: colors.onSurface },
+                      active && { color: colors.onPrimary },
+                    ]}
+                  >
+                    {opt.label}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        </View>
+
         {/* About */}
-        <Text style={styles.sectionTitle}>ABOUT</Text>
-        <View style={styles.aboutCard}>
-          <Text style={styles.aboutBuildLabel}>BUILD VERSION</Text>
-          <Text style={styles.aboutVersion}>
+        <Text style={[styles.sectionTitle, { color: colors.onSurface }]}>ABOUT</Text>
+        <View style={[styles.aboutCard, {
+          backgroundColor: isDark ? colors.surfaceContainerHigh : '#1C1B1B',
+          borderColor: colors.border,
+          shadowColor: borders.shadowColor,
+        }]}>
+          <Text style={[styles.aboutBuildLabel, { color: colors.momentTeal }]}>BUILD VERSION</Text>
+          <Text style={[styles.aboutVersion, { color: isDark ? colors.onSurface : '#FFFFFF' }]}>
             v{Constants.expoConfig?.version ?? '2.4.0'}-{'\n'}BRUTAL
           </Text>
-          <Text style={styles.aboutLink}>
+          <Text style={[styles.aboutLink, { color: colors.primaryContainer }]}>
             VISIT OFFICIAL SITE {'->'}
           </Text>
-          <View style={styles.aboutDivider} />
-          <Text style={styles.aboutFooter}>
+          <View style={[styles.aboutDivider, { backgroundColor: isDark ? colors.outlineVariant : '#444' }]} />
+          <Text style={[styles.aboutFooter, { color: isDark ? colors.textMuted : '#999' }]}>
             Made with {'<3'} for moments
           </Text>
         </View>
@@ -508,6 +570,15 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm,
     alignItems: 'center',
     backgroundColor: COLORS.surfaceContainerLowest,
+  },
+  themeBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    borderWidth: BORDERS.width,
+    paddingVertical: SPACING.sm + 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: SPACING.xs,
   },
   intervalBtnActive: {
     backgroundColor: COLORS.primaryContainer,

@@ -5,31 +5,33 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { ArrowLeftIcon } from 'phosphor-react-native';
 import { MomentForm } from '../../components/MomentForm';
 import { useMoments } from '../../hooks/useMoments';
+import { useTheme } from '../../hooks/useTheme';
 import { COLORS, BORDERS, SPACING } from '../../constants/theme';
 import { FONTS, TYPOGRAPHY } from '../../constants/fonts';
 
 export default function CreateMomentScreen() {
   const { addMoment } = useMoments();
+  const { colors, borders } = useTheme();
   const router = useRouter();
   const [backPressed, setBackPressed] = useState(false);
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { borderBottomColor: colors.border, backgroundColor: colors.surfaceContainerLowest }]}>
         <Pressable
-          style={[styles.backBtn, backPressed && styles.backBtnPressed]}
+          style={[styles.backBtn, { backgroundColor: colors.accentYellow, borderColor: colors.border, shadowColor: borders.shadowColor }, backPressed && styles.backBtnPressed]}
           onPress={() => router.back()}
           onPressIn={() => setBackPressed(true)}
           onPressOut={() => setBackPressed(false)}
         >
-          <ArrowLeftIcon size={20} color={COLORS.onSurface} weight="bold" />
+          <ArrowLeftIcon size={20} color={colors.onSurface} weight="bold" />
         </Pressable>
 
-        <Text style={styles.title}>CREATE NEW{'\n'}MOMENT</Text>
+        <Text style={[styles.title, { color: colors.onSurface }]}>CREATE NEW{'\n'}MOMENT</Text>
 
-        <View style={styles.stepTag}>
-          <Text style={styles.stepText}>STEP{'\n'}01/01</Text>
+        <View style={[styles.stepTag, { backgroundColor: colors.onSurface }]}>
+          <Text style={[styles.stepText, { color: colors.onPrimary }]}>STEP{'\n'}01/01</Text>
         </View>
       </View>
 

@@ -5,6 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import DraggableFlatList, { ScaleDecorator, RenderItemParams } from 'react-native-draggable-flatlist';
 import { QrCodeIcon, PlusIcon } from 'phosphor-react-native';
 import { useMoments } from '../../hooks/useMoments';
+import { useTheme } from '../../hooks/useTheme';
 import { MomentCard } from '../../components/MomentCard';
 import { EmptyState } from '../../components/EmptyState';
 import { COLORS, BORDERS, SPACING } from '../../constants/theme';
@@ -13,6 +14,7 @@ import type { Moment } from '../../db/moments';
 
 export default function HomeScreen() {
   const { moments, loading, reorderMoments } = useMoments();
+  const { colors, borders } = useTheme();
   const router = useRouter();
 
   const renderItem = ({ item, drag, isActive }: RenderItemParams<Moment>) => (
@@ -22,28 +24,28 @@ export default function HomeScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.surfaceContainerLowest }]} edges={['top']}>
       {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.logoChip}>
-          <Text style={styles.logoText}>GUDMOMENT</Text>
+      <View style={[styles.header, { borderBottomColor: colors.border, backgroundColor: colors.surfaceContainerLowest }]}>
+        <View style={[styles.logoChip, { backgroundColor: colors.accentYellow, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
+          <Text style={[styles.logoText, { color: colors.onSurface }]}>GUDMOMENT</Text>
         </View>
         <Pressable
-          style={({ pressed }) => [styles.scanButton, pressed && styles.scanButtonPressed]}
+          style={({ pressed }) => [styles.scanButton, { borderColor: colors.border, backgroundColor: colors.surfaceContainerLowest, shadowColor: borders.shadowColor }, pressed && styles.scanButtonPressed]}
           onPress={() => router.push('/scan')}
         >
-          <QrCodeIcon size={22} color={COLORS.onSurface} weight="bold" />
+          <QrCodeIcon size={22} color={colors.onSurface} weight="bold" />
         </Pressable>
       </View>
 
       {/* Section header */}
-      <View style={[styles.sectionHeader, { backgroundColor: COLORS.surfaceContainerLow }]}>
+      <View style={[styles.sectionHeader, { backgroundColor: colors.surfaceContainerLow }]}>
         <View style={styles.sectionLeft}>
-          <Text style={[styles.liveFeedLabel]}>LIVE FEED</Text>
-          <Text style={styles.sectionTitle}>Your Moments</Text>
+          <Text style={[styles.liveFeedLabel, { color: colors.primary }]}>LIVE FEED</Text>
+          <Text style={[styles.sectionTitle, { color: colors.onSurface }]}>Your Moments</Text>
         </View>
-        <View style={styles.countBadge}>
-          <Text style={styles.countText}>COUNT: {moments.length.toString().padStart(2, '0')}</Text>
+        <View style={[styles.countBadge, { backgroundColor: colors.surfaceContainerHigh, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
+          <Text style={[styles.countText, { color: colors.onSurface }]}>COUNT: {moments.length.toString().padStart(2, '0')}</Text>
         </View>
       </View>
 
@@ -51,7 +53,7 @@ export default function HomeScreen() {
       {moments.length === 0 && !loading ? (
         <EmptyState />
       ) : (
-        <GestureHandlerRootView style={{ flex: 1, backgroundColor: COLORS.surfaceContainerLow }}>
+        <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.surfaceContainerLow }}>
           <DraggableFlatList
             data={moments}
             keyExtractor={(item) => item.id}
@@ -64,10 +66,10 @@ export default function HomeScreen() {
 
       {/* FAB */}
       <Pressable
-        style={({ pressed }) => [styles.fab, pressed && styles.fabPressed]}
+        style={({ pressed }) => [styles.fab, { backgroundColor: colors.accentYellow, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.fabPressed]}
         onPress={() => router.push('/moment/create')}
       >
-        <PlusIcon size={32} color={COLORS.onSurface} weight="bold" />
+        <PlusIcon size={32} color={colors.onSurface} weight="bold" />
       </Pressable>
     </SafeAreaView>
   );

@@ -5,6 +5,7 @@ import { View, Text, Pressable, ActivityIndicator, ScrollView, StyleSheet } from
 import { ArrowLeftIcon, ArrowsClockwiseIcon } from 'phosphor-react-native';
 import { MomentForm } from '../../../components/MomentForm';
 import { useMoments } from '../../../hooks/useMoments';
+import { useTheme } from '../../../hooks/useTheme';
 import { getMomentById, type Moment } from '../../../db/moments';
 import { COLORS, BORDERS, SPACING } from '../../../constants/theme';
 import { FONTS, TYPOGRAPHY } from '../../../constants/fonts';
@@ -12,6 +13,7 @@ import { FONTS, TYPOGRAPHY } from '../../../constants/fonts';
 export default function EditMomentScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { editMoment } = useMoments();
+  const { colors, borders } = useTheme();
   const router = useRouter();
   const [moment, setMoment] = useState<Moment | null>(null);
   const [backPressed, setBackPressed] = useState(false);
@@ -22,8 +24,8 @@ export default function EditMomentScreen() {
 
   if (!moment) {
     return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
+      <View style={[styles.loading, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -41,20 +43,20 @@ export default function EditMomentScreen() {
     : '';
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { borderBottomColor: colors.border, backgroundColor: colors.surfaceContainerLowest }]}>
         <Pressable
-          style={[styles.backBtn, backPressed && styles.backBtnPressed]}
+          style={[styles.backBtn, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }, backPressed && styles.backBtnPressed]}
           onPress={() => router.back()}
           onPressIn={() => setBackPressed(true)}
           onPressOut={() => setBackPressed(false)}
         >
-          <ArrowLeftIcon size={20} color={COLORS.onSurface} weight="bold" />
+          <ArrowLeftIcon size={20} color={colors.onSurface} weight="bold" />
         </Pressable>
 
-        <View style={styles.logoChip}>
-          <Text style={styles.logoText}>GUDMOMENT</Text>
+        <View style={[styles.logoChip, { backgroundColor: colors.accentYellow, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
+          <Text style={[styles.logoText, { color: colors.onSurface }]}>GUDMOMENT</Text>
         </View>
 
         <View style={{ width: 44 }} />
@@ -63,25 +65,25 @@ export default function EditMomentScreen() {
       {/* Title Section */}
       <View style={styles.titleSection}>
         <View>
-          <Text style={styles.pageTitle}>EDIT MOMENT</Text>
-          <View style={styles.titleUnderline} />
+          <Text style={[styles.pageTitle, { color: colors.onSurface }]}>EDIT MOMENT</Text>
+          <View style={[styles.titleUnderline, { backgroundColor: colors.primaryContainer }]} />
         </View>
-        <Text style={styles.archiveId}>ARCHIVE ID: {archiveId}</Text>
+        <Text style={[styles.archiveId, { color: colors.textMuted }]}>ARCHIVE ID: {archiveId}</Text>
       </View>
 
       {/* Context Hero Card */}
-      <View style={styles.heroCard}>
-        <View style={styles.emojiBox}>
+      <View style={[styles.heroCard, { backgroundColor: colors.momentTeal, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
+        <View style={[styles.emojiBox, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
           <Text style={styles.emojiText}>{moment.emoji}</Text>
         </View>
         <View style={styles.heroContent}>
-          <View style={styles.currentEntryTag}>
-            <Text style={styles.currentEntryText}>CURRENT ENTRY</Text>
+          <View style={[styles.currentEntryTag, { backgroundColor: colors.onSurface }]}>
+            <Text style={[styles.currentEntryText, { color: colors.onPrimary }]}>CURRENT ENTRY</Text>
           </View>
-          <Text style={styles.heroTitle} numberOfLines={2}>
+          <Text style={[styles.heroTitle, { color: colors.onSurface }]} numberOfLines={2}>
             {moment.title}
           </Text>
-          <Text style={styles.heroDate}>
+          <Text style={[styles.heroDate, { color: colors.onSurfaceVariant }]}>
             Captured {capturedDate}{capturedTime ? ` \u2022 ${capturedTime}` : ''}
           </Text>
         </View>

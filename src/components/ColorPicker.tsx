@@ -1,19 +1,22 @@
 import { View, Pressable, StyleSheet } from 'react-native';
 import { MOMENT_COLORS } from '../constants/colors';
-import { COLORS, BORDERS, SPACING } from '../constants/theme';
+import { BORDERS, SPACING } from '../constants/theme';
+import { useTheme } from '../hooks/useTheme';
 
 interface Props { selected: string; onSelect: (color: string) => void; }
 
 export function ColorPicker({ selected, onSelect }: Props) {
+  const { colors, borders } = useTheme();
+
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
       <View style={styles.grid}>
         {MOMENT_COLORS.map((color) => (
-          <View key={color} style={selected === color ? styles.ringWrapper : undefined}>
+          <View key={color} style={selected === color ? [styles.ringWrapper, { borderColor: colors.border }] : undefined}>
             <Pressable
               style={[
                 styles.swatch,
-                { backgroundColor: color },
+                { backgroundColor: color, borderColor: colors.border, shadowColor: borders.shadowColor },
                 selected === color && styles.selected,
               ]}
               onPress={() => onSelect(color)}
@@ -29,11 +32,8 @@ export function ColorPicker({ selected, onSelect }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.surfaceContainerLowest,
     borderWidth: BORDERS.width,
-    borderColor: COLORS.border,
     padding: SPACING.lg,
-    shadowColor: BORDERS.shadowColor,
     shadowOffset: BORDERS.shadowOffset,
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -49,8 +49,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 9999,
     borderWidth: BORDERS.width,
-    borderColor: COLORS.border,
-    shadowColor: BORDERS.shadowColor,
     shadowOffset: BORDERS.shadowSm,
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -64,7 +62,6 @@ const styles = StyleSheet.create({
   ringWrapper: {
     borderRadius: 9999,
     borderWidth: 2,
-    borderColor: COLORS.border,
     padding: 2,
   },
 });

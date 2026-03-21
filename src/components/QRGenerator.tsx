@@ -1,6 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import { COLORS, BORDERS, SPACING } from '../constants/theme';
+import { BORDERS, SPACING } from '../constants/theme';
+import { useTheme } from '../hooks/useTheme';
 
 interface Props {
   value: string;
@@ -8,9 +9,11 @@ interface Props {
 }
 
 export function QRGenerator({ value, size = 250 }: Props) {
+  const { colors, borders } = useTheme();
+
   return (
-    <View style={styles.container}>
-      <QRCode value={value} size={size} backgroundColor={COLORS.surfaceContainerLowest} color={COLORS.border} />
+    <View style={[styles.container, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
+      <QRCode value={value} size={size} backgroundColor={colors.surfaceContainerLowest} color={colors.border} />
     </View>
   );
 }
@@ -18,11 +21,8 @@ export function QRGenerator({ value, size = 250 }: Props) {
 const styles = StyleSheet.create({
   container: {
     padding: SPACING.lg,
-    backgroundColor: COLORS.surfaceContainerLowest,
     borderWidth: BORDERS.width,
-    borderColor: COLORS.border,
     alignItems: 'center',
-    shadowColor: BORDERS.shadowColor,
     shadowOffset: BORDERS.shadowOffset,
     shadowOpacity: 1,
     shadowRadius: 0,

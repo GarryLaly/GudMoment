@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import { SparkleIcon, ClockCounterClockwiseIcon, ArrowDownIcon } from 'phosphor-react-native';
-import { COLORS, SPACING, BORDERS } from '../constants/theme';
+import { SPACING, BORDERS } from '../constants/theme';
 import { FONTS, TYPOGRAPHY } from '../constants/fonts';
+import { useTheme } from '../hooks/useTheme';
 
 export function EmptyState() {
+  const { colors, borders } = useTheme();
   const bounceAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -29,22 +31,22 @@ export function EmptyState() {
   return (
     <View style={styles.container}>
       <View style={styles.iconArea}>
-        <View style={styles.yellowSquare}>
-          <SparkleIcon size={80} color={COLORS.border} weight="bold" />
+        <View style={[styles.yellowSquare, { borderColor: colors.border, shadowColor: borders.shadowColor }]}>
+          <SparkleIcon size={80} color={colors.border} weight="bold" />
         </View>
-        <View style={styles.tealSquare}>
-          <ClockCounterClockwiseIcon size={32} color={COLORS.border} weight="bold" />
+        <View style={[styles.tealSquare, { borderColor: colors.border, shadowColor: borders.shadowColor }]}>
+          <ClockCounterClockwiseIcon size={32} color={colors.border} weight="bold" />
         </View>
       </View>
 
-      <Text style={styles.title}>No moments yet?</Text>
-      <Text style={styles.body}>
+      <Text style={[styles.title, { color: colors.text }]}>No moments yet?</Text>
+      <Text style={[styles.body, { color: colors.textMuted }]}>
         Capture a memory and let the clock start ticking!
       </Text>
 
       <Animated.View style={[styles.bounceRow, { transform: [{ translateY: bounceAnim }] }]}>
-        <Text style={styles.bounceText}>Let's make one!</Text>
-        <ArrowDownIcon size={20} color={COLORS.primary} weight="bold" />
+        <Text style={[styles.bounceText, { color: colors.primary }]}>Let's make one!</Text>
+        <ArrowDownIcon size={20} color={colors.primary} weight="bold" />
       </Animated.View>
     </View>
   );
@@ -67,10 +69,8 @@ const styles = StyleSheet.create({
     height: 192,
     backgroundColor: '#FFE66D',
     borderWidth: BORDERS.width,
-    borderColor: COLORS.border,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: BORDERS.shadowColor,
     shadowOffset: BORDERS.shadowOffset,
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -85,10 +85,8 @@ const styles = StyleSheet.create({
     height: 96,
     backgroundColor: '#4ECDC4',
     borderWidth: BORDERS.width,
-    borderColor: COLORS.border,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: BORDERS.shadowColor,
     shadowOffset: BORDERS.shadowSm,
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -98,14 +96,12 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: FONTS.heading,
     fontSize: 24,
-    color: COLORS.text,
     marginTop: SPACING.lg,
     marginBottom: SPACING.sm,
     textAlign: 'center',
   },
   body: {
     ...TYPOGRAPHY.body,
-    color: COLORS.textMuted,
     textAlign: 'center',
     marginBottom: SPACING.lg,
   },
@@ -117,6 +113,5 @@ const styles = StyleSheet.create({
   bounceText: {
     fontFamily: FONTS.heading,
     fontSize: 16,
-    color: COLORS.primary,
   },
 });

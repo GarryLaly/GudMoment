@@ -5,8 +5,22 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { FONTS } from '../constants/fonts';
 import { MomentsProvider } from '../context/MomentsContext';
+import { ThemeProvider } from '../context/ThemeContext';
+import { useTheme } from '../hooks/useTheme';
 
 SplashScreen.preventAutoHideAsync();
+
+function InnerLayout() {
+  const { isDark } = useTheme();
+  return (
+    <>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <MomentsProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </MomentsProvider>
+    </>
+  );
+}
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -27,11 +41,8 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <>
-      <StatusBar style="dark" />
-      <MomentsProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-      </MomentsProvider>
-    </>
+    <ThemeProvider>
+      <InnerLayout />
+    </ThemeProvider>
   );
 }

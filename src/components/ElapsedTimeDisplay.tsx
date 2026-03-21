@@ -1,7 +1,7 @@
 import { Text, StyleSheet, type TextStyle } from 'react-native';
 import { useElapsedTime } from '../hooks/useElapsedTime';
 import { TYPOGRAPHY } from '../constants/fonts';
-import { COLORS } from '../constants/theme';
+import { useTheme } from '../hooks/useTheme';
 
 interface Props {
   date: string;
@@ -11,13 +11,27 @@ interface Props {
 }
 
 export function ElapsedTimeDisplay({ date, time, style, size = 'md' }: Props) {
+  const { colors } = useTheme();
   const formatted = useElapsedTime(date, time);
-  return <Text style={[styles.base, styles[size], style]}>{formatted}</Text>;
+
+  return (
+    <Text
+      style={[
+        styles.base,
+        { color: colors.textMuted },
+        styles[size],
+        size === 'lg' && { color: colors.onSurface },
+        style,
+      ]}
+    >
+      {formatted}
+    </Text>
+  );
 }
 
 const styles = StyleSheet.create({
-  base: { ...TYPOGRAPHY.mono, color: COLORS.textMuted },
+  base: { ...TYPOGRAPHY.mono },
   sm: { fontSize: 12 },
   md: { fontSize: 16 },
-  lg: { fontSize: 28, fontFamily: TYPOGRAPHY.monoLg.fontFamily, color: COLORS.onSurface },
+  lg: { fontSize: 28, fontFamily: TYPOGRAPHY.monoLg.fontFamily },
 });

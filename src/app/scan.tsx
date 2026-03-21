@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { CrosshairSimpleIcon, CheckCircleIcon } from 'phosphor-react-native';
 import { decodeMomentFromQR } from '../utils/qrCodec';
 import { useMoments } from '../hooks/useMoments';
+import { useTheme } from '../hooks/useTheme';
 import { COLORS, BORDERS, SPACING } from '../constants/theme';
 import { FONTS, TYPOGRAPHY } from '../constants/fonts';
 
@@ -13,6 +14,7 @@ export default function ScanScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const { addMoment } = useMoments();
+  const { colors, borders } = useTheme();
   const router = useRouter();
 
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
@@ -45,16 +47,16 @@ export default function ScanScreen() {
   // Permission state
   if (!permission?.granted) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.surfaceContainerLow }]}>
         <View style={styles.permCard}>
-          <CrosshairSimpleIcon size={64} color={COLORS.onSurface} weight="bold" />
-          <Text style={styles.permTitle}>Camera Access</Text>
-          <Text style={styles.permText}>Camera permission is needed to scan QR codes</Text>
+          <CrosshairSimpleIcon size={64} color={colors.onSurface} weight="bold" />
+          <Text style={[styles.permTitle, { color: colors.onSurface }]}>Camera Access</Text>
+          <Text style={[styles.permText, { color: colors.textMuted }]}>Camera permission is needed to scan QR codes</Text>
           <Pressable
-            style={({ pressed }) => [styles.permButton, pressed && styles.permButtonPressed]}
+            style={({ pressed }) => [styles.permButton, { backgroundColor: colors.primary, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.permButtonPressed]}
             onPress={requestPermission}
           >
-            <Text style={styles.permButtonText}>GRANT PERMISSION</Text>
+            <Text style={[styles.permButtonText, { color: colors.onPrimary }]}>GRANT PERMISSION</Text>
           </Pressable>
         </View>
       </SafeAreaView>
@@ -74,8 +76,8 @@ export default function ScanScreen() {
       <SafeAreaView style={styles.overlay} edges={['top', 'bottom']}>
         {/* Header - Logo chip */}
         <View style={styles.header}>
-          <View style={styles.logoChip}>
-            <Text style={styles.logoText}>GudMoment</Text>
+          <View style={[styles.logoChip, { backgroundColor: colors.accentYellow, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
+            <Text style={[styles.logoText, { color: colors.onSurface }]}>GudMoment</Text>
           </View>
         </View>
 
@@ -83,40 +85,40 @@ export default function ScanScreen() {
         <View style={styles.centerArea}>
           {/* Moment Found tooltip */}
           {scanned && (
-            <View style={styles.foundTooltip}>
-              <CheckCircleIcon size={22} color={COLORS.onPrimary} weight="fill" />
-              <Text style={styles.foundText}>MOMENT FOUND!</Text>
+            <View style={[styles.foundTooltip, { backgroundColor: colors.momentTeal, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
+              <CheckCircleIcon size={22} color={colors.onPrimary} weight="fill" />
+              <Text style={[styles.foundText, { color: colors.onPrimary }]}>MOMENT FOUND!</Text>
             </View>
           )}
 
           {/* Instruction tag */}
           {!scanned && (
-            <View style={styles.instructionTag}>
-              <Text style={styles.instructionText}>POSITION QR CODE WITHIN THE FRAME</Text>
+            <View style={[styles.instructionTag, { backgroundColor: colors.accentYellow, borderColor: colors.border, shadowColor: borders.shadowColor }]}>
+              <Text style={[styles.instructionText, { color: colors.onSurface }]}>POSITION QR CODE WITHIN THE FRAME</Text>
             </View>
           )}
 
           {/* Scanner frame */}
           <View style={styles.frameContainer}>
-            <View style={styles.frame}>
-              <View style={styles.frameInner} />
+            <View style={[styles.frame, { borderColor: colors.onSurface }]}>
+              <View style={[styles.frameInner, { borderColor: colors.momentTeal + '80' }]} />
             </View>
 
             {/* Corner markers */}
-            <View style={[styles.corner, styles.cornerTL]} />
-            <View style={[styles.corner, styles.cornerTR]} />
-            <View style={[styles.corner, styles.cornerBL]} />
-            <View style={[styles.corner, styles.cornerBR]} />
+            <View style={[styles.corner, styles.cornerTL, { borderColor: colors.onSurface }]} />
+            <View style={[styles.corner, styles.cornerTR, { borderColor: colors.onSurface }]} />
+            <View style={[styles.corner, styles.cornerBL, { borderColor: colors.onSurface }]} />
+            <View style={[styles.corner, styles.cornerBR, { borderColor: colors.onSurface }]} />
           </View>
         </View>
 
         {/* Bottom controls */}
         <View style={styles.bottomControls}>
           <Pressable
-            style={({ pressed }) => [styles.cancelButton, pressed && styles.cancelButtonPressed]}
+            style={({ pressed }) => [styles.cancelButton, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.cancelButtonPressed]}
             onPress={() => router.back()}
           >
-            <Text style={styles.cancelText}>CANCEL</Text>
+            <Text style={[styles.cancelText, { color: colors.onSurface }]}>CANCEL</Text>
           </Pressable>
         </View>
       </SafeAreaView>

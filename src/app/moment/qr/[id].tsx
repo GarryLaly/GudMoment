@@ -6,12 +6,14 @@ import { ArrowLeftIcon, DotsThreeVerticalIcon, DownloadSimpleIcon, ShareNetworkI
 import { QRGenerator } from '../../../components/QRGenerator';
 import { getMomentById } from '../../../db/moments';
 import { encodeMomentForQR } from '../../../utils/qrCodec';
+import { useTheme } from '../../../hooks/useTheme';
 import { COLORS, BORDERS, SPACING } from '../../../constants/theme';
 import { FONTS, TYPOGRAPHY } from '../../../constants/fonts';
 
 export default function QRScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { colors, borders } = useTheme();
   const [qrData, setQrData] = useState<string | null>(null);
   const [momentTitle, setMomentTitle] = useState('');
   const [momentDate, setMomentDate] = useState('');
@@ -39,30 +41,30 @@ export default function QRScreen() {
   if (!qrData) return null;
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.surfaceContainerLow }]} edges={['top']}>
       {/* Header */}
       <View style={styles.header}>
         <Pressable
-          style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
+          style={({ pressed }) => [styles.backButton, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.backButtonPressed]}
           onPress={() => router.back()}
         >
-          <ArrowLeftIcon size={22} color={COLORS.onSurface} weight="bold" />
+          <ArrowLeftIcon size={22} color={colors.onSurface} weight="bold" />
         </Pressable>
-        <Text style={styles.headerTitle}>SHARE MOMENT</Text>
+        <Text style={[styles.headerTitle, { color: colors.onSurface }]}>SHARE MOMENT</Text>
         <Pressable style={styles.menuButton}>
-          <DotsThreeVerticalIcon size={24} color={COLORS.onSurface} weight="bold" />
+          <DotsThreeVerticalIcon size={24} color={colors.onSurface} weight="bold" />
         </Pressable>
       </View>
 
       {/* Ticket Card */}
       <View style={styles.ticketWrapper}>
-        <View style={styles.ticket}>
+        <View style={[styles.ticket, { borderColor: colors.border, shadowColor: borders.shadowColor }]}>
           {/* Top Section */}
-          <View style={styles.ticketTop}>
+          <View style={[styles.ticketTop, { backgroundColor: colors.primaryContainer, borderBottomColor: colors.border }]}>
             <Text style={styles.ticketEmoji}>{momentEmoji}</Text>
-            <Text style={styles.ticketTitle}>{momentTitle}</Text>
-            <View style={styles.dateTag}>
-              <Text style={styles.dateTagText}>
+            <Text style={[styles.ticketTitle, { color: colors.onPrimary }]}>{momentTitle}</Text>
+            <View style={[styles.dateTag, { backgroundColor: colors.onSurface }]}>
+              <Text style={[styles.dateTagText, { color: colors.onPrimary }]}>
                 {new Date(momentDate).toLocaleDateString(undefined, {
                   year: 'numeric', month: 'short', day: 'numeric',
                 })}
@@ -71,11 +73,11 @@ export default function QRScreen() {
           </View>
 
           {/* Middle Section - QR */}
-          <View style={styles.ticketMiddle}>
+          <View style={[styles.ticketMiddle, { backgroundColor: colors.surfaceContainerLowest }]}>
             {/* Perforated edge - left */}
-            <View style={[styles.perforatedCircle, styles.perforatedLeft]} />
+            <View style={[styles.perforatedCircle, styles.perforatedLeft, { backgroundColor: colors.surfaceContainerLow, borderColor: colors.border }]} />
             {/* Perforated edge - right */}
-            <View style={[styles.perforatedCircle, styles.perforatedRight]} />
+            <View style={[styles.perforatedCircle, styles.perforatedRight, { backgroundColor: colors.surfaceContainerLow, borderColor: colors.border }]} />
 
             <View style={styles.qrBox}>
               <QRGenerator value={qrData} size={200} />
@@ -83,10 +85,10 @@ export default function QRScreen() {
           </View>
 
           {/* Bottom Section */}
-          <View style={styles.ticketBottom}>
-            <Text style={styles.instructionText}>SCAN WITH GUDMOMENT APP</Text>
-            <View style={styles.logoBadge}>
-              <Text style={styles.logoText}>GM</Text>
+          <View style={[styles.ticketBottom, { backgroundColor: colors.surfaceContainerHigh, borderTopColor: colors.border }]}>
+            <Text style={[styles.instructionText, { color: colors.textMuted }]}>SCAN WITH GUDMOMENT APP</Text>
+            <View style={[styles.logoBadge, { backgroundColor: colors.accentYellow, borderColor: colors.border }]}>
+              <Text style={[styles.logoText, { color: colors.onSurface }]}>GM</Text>
             </View>
           </View>
         </View>
@@ -95,25 +97,25 @@ export default function QRScreen() {
       {/* Action Buttons */}
       <View style={styles.actionsContainer}>
         <Pressable
-          style={({ pressed }) => [styles.downloadButton, pressed && styles.buttonPressed]}
+          style={({ pressed }) => [styles.downloadButton, { backgroundColor: colors.tertiaryContainer, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.buttonPressed]}
         >
-          <DownloadSimpleIcon size={22} color={COLORS.onSurface} weight="bold" />
-          <Text style={styles.downloadText}>DOWNLOAD IMAGE</Text>
+          <DownloadSimpleIcon size={22} color={colors.onSurface} weight="bold" />
+          <Text style={[styles.downloadText, { color: colors.onSurface }]}>DOWNLOAD IMAGE</Text>
         </Pressable>
 
         <View style={styles.actionRow}>
           <Pressable
-            style={({ pressed }) => [styles.actionButton, styles.shareButton, pressed && styles.buttonPressed]}
+            style={({ pressed }) => [styles.actionButton, styles.shareButton, { backgroundColor: colors.secondaryContainer, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.buttonPressed]}
             onPress={() => Share.share({ message: `Check out this moment: ${momentTitle}` })}
           >
-            <ShareNetworkIcon size={22} color={COLORS.onSurface} weight="bold" />
-            <Text style={styles.actionButtonText}>SHARE</Text>
+            <ShareNetworkIcon size={22} color={colors.onSurface} weight="bold" />
+            <Text style={[styles.actionButtonText, { color: colors.onSurface }]}>SHARE</Text>
           </Pressable>
           <Pressable
-            style={({ pressed }) => [styles.actionButton, styles.linkButton, pressed && styles.buttonPressed]}
+            style={({ pressed }) => [styles.actionButton, styles.linkButton, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.buttonPressed]}
           >
-            <LinkIcon size={22} color={COLORS.onSurface} weight="bold" />
-            <Text style={styles.actionButtonText}>LINK</Text>
+            <LinkIcon size={22} color={colors.onSurface} weight="bold" />
+            <Text style={[styles.actionButtonText, { color: colors.onSurface }]}>LINK</Text>
           </Pressable>
         </View>
       </View>

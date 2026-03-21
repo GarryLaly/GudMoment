@@ -1,7 +1,8 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { ElapsedTimeDisplay } from './ElapsedTimeDisplay';
-import { COLORS, BORDERS, SPACING } from '../constants/theme';
+import { BORDERS, SPACING } from '../constants/theme';
 import { FONTS, TYPOGRAPHY } from '../constants/fonts';
+import { useTheme } from '../hooks/useTheme';
 import type { Moment } from '../db/moments';
 
 interface Props {
@@ -12,32 +13,38 @@ interface Props {
 }
 
 export function MomentCard({ moment, onPress, onLongPress, disabled }: Props) {
+  const { colors, borders } = useTheme();
+
   return (
     <Pressable
       onPress={() => onPress(moment.id)}
       onLongPress={onLongPress}
       disabled={disabled}
-      style={({ pressed }) => [styles.container, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.container,
+        { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor },
+        pressed && styles.pressed,
+      ]}
       accessibilityLabel={moment.title}
       testID={`moment-card-${moment.id}`}
     >
       {({ pressed }) => (
         <>
-          <View style={[styles.stripe, { backgroundColor: moment.color }]} />
+          <View style={[styles.stripe, { backgroundColor: moment.color, borderRightColor: colors.border }]} />
           <View style={styles.content}>
             <View style={styles.emojiContainer}>
               <Text style={styles.emoji}>{moment.emoji}</Text>
             </View>
             <View style={styles.textColumn}>
-              <Text style={styles.title} numberOfLines={1} accessibilityLabel={moment.title}>
+              <Text style={[styles.title, { color: colors.text }]} numberOfLines={1} accessibilityLabel={moment.title}>
                 {moment.title}
               </Text>
               <ElapsedTimeDisplay date={moment.date} time={moment.time} size="sm" />
             </View>
             <View style={styles.dragDots}>
-              <View style={styles.dot} />
-              <View style={styles.dot} />
-              <View style={styles.dot} />
+              <View style={[styles.dot, { backgroundColor: colors.border }]} />
+              <View style={[styles.dot, { backgroundColor: colors.border }]} />
+              <View style={[styles.dot, { backgroundColor: colors.border }]} />
             </View>
           </View>
         </>
@@ -49,12 +56,9 @@ export function MomentCard({ moment, onPress, onLongPress, disabled }: Props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: COLORS.surfaceContainerLowest,
     borderWidth: BORDERS.width,
-    borderColor: COLORS.border,
     marginBottom: SPACING.sm,
     marginHorizontal: SPACING.page,
-    shadowColor: BORDERS.shadowColor,
     shadowOffset: BORDERS.shadowOffset,
     shadowOpacity: 1,
     shadowRadius: 0,
@@ -70,7 +74,6 @@ const styles = StyleSheet.create({
   stripe: {
     width: 16,
     borderRightWidth: BORDERS.width,
-    borderRightColor: COLORS.border,
   },
   content: {
     flex: 1,
@@ -93,7 +96,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.heading,
     fontSize: 20,
     letterSpacing: -0.3,
-    color: COLORS.text,
   },
   dragDots: {
     justifyContent: 'center',
@@ -104,6 +106,5 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: COLORS.border,
   },
 });

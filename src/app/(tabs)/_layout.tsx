@@ -1,24 +1,27 @@
 import { Tabs } from 'expo-router';
 import { SparkleIcon, GearSixIcon } from 'phosphor-react-native';
-import { COLORS, BORDERS } from '../../constants/theme';
+import { BORDERS } from '../../constants/theme';
 import { FONTS } from '../../constants/fonts';
+import { useTheme } from '../../hooks/useTheme';
 
 export default function TabLayout() {
+  const { colors, borders } = useTheme();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: COLORS.onPrimary,
-        tabBarInactiveTintColor: COLORS.onSurface,
+        tabBarActiveTintColor: colors.onPrimary,
+        tabBarInactiveTintColor: colors.onSurface,
         tabBarLabelStyle: { fontFamily: FONTS.monoBold, fontSize: 10, textTransform: 'uppercase', letterSpacing: 1 },
         tabBarStyle: {
           borderTopWidth: BORDERS.width,
-          borderTopColor: COLORS.border,
-          backgroundColor: COLORS.surfaceContainerLowest,
+          borderTopColor: colors.border,
+          backgroundColor: colors.surfaceContainerLowest,
           paddingTop: 6,
           paddingBottom: 8,
         },
-        tabBarActiveBackgroundColor: COLORS.primaryContainer,
+        tabBarActiveBackgroundColor: colors.primaryContainer,
       }}
     >
       <Tabs.Screen

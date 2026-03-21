@@ -6,6 +6,7 @@ import { ArrowLeftIcon, QrCodeIcon, PencilSimpleIcon, TrashIcon, BellRingingIcon
 import { ElapsedTimeDisplay } from '../../components/ElapsedTimeDisplay';
 import { NotificationPicker } from '../../components/NotificationPicker';
 import { useMoments } from '../../hooks/useMoments';
+import { useTheme } from '../../hooks/useTheme';
 import { getMomentById, type Moment } from '../../db/moments';
 import { COLORS, BORDERS, SPACING } from '../../constants/theme';
 import { FONTS, TYPOGRAPHY } from '../../constants/fonts';
@@ -13,6 +14,7 @@ import { FONTS, TYPOGRAPHY } from '../../constants/fonts';
 export default function MomentDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { removeMoment } = useMoments();
+  const { colors, borders } = useTheme();
   const router = useRouter();
   const [moment, setMoment] = useState<Moment | null>(null);
 
@@ -29,69 +31,69 @@ export default function MomentDetailScreen() {
   if (!moment) return null;
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.surfaceContainerLow }]} edges={['top']}>
       <ScrollView contentContainerStyle={styles.content}>
         {/* Header */}
         <View style={styles.header}>
           <Pressable
-            style={({ pressed }) => [styles.backButton, pressed && styles.backButtonPressed]}
+            style={({ pressed }) => [styles.backButton, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.backButtonPressed]}
             onPress={() => router.back()}
           >
-            <ArrowLeftIcon size={22} color={COLORS.onSurface} weight="bold" />
+            <ArrowLeftIcon size={22} color={colors.onSurface} weight="bold" />
           </Pressable>
-          <Text style={styles.headerTitle}>MOMENT DETAILS</Text>
+          <Text style={[styles.headerTitle, { color: colors.onSurface }]}>MOMENT DETAILS</Text>
         </View>
 
         {/* Hero Section */}
-        <View style={[styles.heroCard, { backgroundColor: COLORS.primaryContainer + '33' }]}>
+        <View style={[styles.heroCard, { backgroundColor: colors.primaryContainer + '33', borderColor: colors.border, shadowColor: borders.shadowColor }]}>
           <View style={styles.heroContent}>
             <Text style={styles.emoji}>{moment.emoji}</Text>
-            <Text style={styles.title}>{moment.title}</Text>
+            <Text style={[styles.title, { color: colors.onSurface }]}>{moment.title}</Text>
             <ElapsedTimeDisplay
               date={moment.date}
               time={moment.time}
               size="lg"
-              style={styles.elapsedTime}
+              style={{ ...styles.elapsedTime, color: colors.primary }}
             />
-            <Text style={styles.dateLabel}>
+            <Text style={[styles.dateLabel, { color: colors.textMuted }]}>
               {new Date(moment.date).toLocaleDateString(undefined, {
                 weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
               })}
             </Text>
           </View>
-          <View style={styles.heroDivider} />
+          <View style={[styles.heroDivider, { backgroundColor: colors.border + '1A' }]} />
         </View>
 
         {/* Action Row */}
         <View style={styles.actions}>
           <Pressable
-            style={({ pressed }) => [styles.actionButton, styles.actionShare, pressed && styles.actionPressed]}
+            style={({ pressed }) => [styles.actionButton, styles.actionShare, { backgroundColor: colors.accentYellow, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.actionPressed]}
             onPress={() => router.push(`/moment/qr/${id}`)}
           >
-            <QrCodeIcon size={28} color={COLORS.onSurface} weight="bold" />
-            <Text style={styles.actionLabel}>SHARE QR</Text>
+            <QrCodeIcon size={28} color={colors.onSurface} weight="bold" />
+            <Text style={[styles.actionLabel, { color: colors.onSurface }]}>SHARE QR</Text>
           </Pressable>
           <Pressable
-            style={({ pressed }) => [styles.actionButton, styles.actionEdit, pressed && styles.actionPressed]}
+            style={({ pressed }) => [styles.actionButton, styles.actionEdit, { backgroundColor: colors.momentTeal, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.actionPressed]}
             onPress={() => router.push(`/moment/edit/${id}`)}
           >
-            <PencilSimpleIcon size={28} color={COLORS.onSurface} weight="bold" />
-            <Text style={styles.actionLabel}>EDIT</Text>
+            <PencilSimpleIcon size={28} color={colors.onSurface} weight="bold" />
+            <Text style={[styles.actionLabel, { color: colors.onSurface }]}>EDIT</Text>
           </Pressable>
           <Pressable
-            style={({ pressed }) => [styles.actionButton, styles.actionDelete, pressed && styles.actionPressed]}
+            style={({ pressed }) => [styles.actionButton, styles.actionDelete, { backgroundColor: colors.primaryContainer, borderColor: colors.border, shadowColor: borders.shadowColor }, pressed && styles.actionPressed]}
             onPress={handleDelete}
           >
-            <TrashIcon size={28} color={COLORS.onPrimary} weight="bold" />
-            <Text style={[styles.actionLabel, { color: COLORS.onPrimary }]}>DELETE</Text>
+            <TrashIcon size={28} color={colors.onPrimary} weight="bold" />
+            <Text style={[styles.actionLabel, { color: colors.onPrimary }]}>DELETE</Text>
           </Pressable>
         </View>
 
         {/* Reminders Section */}
         <View style={styles.remindersSection}>
           <View style={styles.remindersHeader}>
-            <BellRingingIcon size={24} color={COLORS.tertiaryContainer} weight="fill" />
-            <Text style={styles.remindersHeading}>REMINDERS</Text>
+            <BellRingingIcon size={24} color={colors.tertiaryContainer} weight="fill" />
+            <Text style={[styles.remindersHeading, { color: colors.onSurface }]}>REMINDERS</Text>
           </View>
           <NotificationPicker momentId={moment.id} momentTitle={moment.title} momentDate={moment.date} />
         </View>
