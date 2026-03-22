@@ -39,7 +39,6 @@ yarn-error.*
 *.tsbuildinfo
 
 # EAS
-eas.json
 
 *.ipa
 *.apk
